@@ -3,7 +3,7 @@
 #endif
 #define _dynamic_param_stocks_included
 
-#define AMX_ERR AMX_ERR_NATIVE
+#define AMX_ERR_CODE AMX_ERR_NATIVE
 
 /*******************************************************************************
  * STOCKS
@@ -15,7 +15,7 @@ stock bool:numParamsEqual(expectation, test) {
     }
 
     new trace = dbg_trace_begin();
-    new line, function[32], file[32];
+    new line, function[64], file[64];
     dbg_trace_info(
             trace,
             line,
@@ -25,7 +25,7 @@ stock bool:numParamsEqual(expectation, test) {
             charsmax(name));
 
     log_error(
-            AMX_ERR,
+            AMX_ERR_CODE,
             "[%s] Expected %d parameters, found %d",
             function,
             expectation,
