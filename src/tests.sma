@@ -3,6 +3,7 @@
 #include "include/dynamic_param_stocks.inc"
 #include "include/path_stocks.inc"
 #include "include/string_stocks.inc"
+#include "include/flag_stocks.inc"
 
 static const TEST[][] = {
     "FAILED",
@@ -26,6 +27,8 @@ public plugin_init() {
     test_getPath();
     test_fixPath();
     test_dynamicParamsStocks();
+    test_flagStocks();
+    test_exceptions();
 
     log_amx("Finished Stocks tests: %s (%d/%d)", TEST[tests == passed], passed, tests);
 }
@@ -378,4 +381,118 @@ test_dynamicParamsStocks() {
     log_amx("\t%s - numParamsInRange(6, 10, 8);", TEST[isEqual]);
     test(!numParamsInRange(logger, 1, 0, 0));
     log_amx("\t%s - !numParamsInRange(1, 0, 0); (illegal arguments)", TEST[isEqual]);
+}
+
+test_flagStocks() {
+    new i;
+    new bool: b;
+
+    log_amx("Testing flag stocks");
+
+    new val = 0b0101;
+    getFlag(logger, val, 1, i);
+    test(i == 0b0001);
+    log_amx("\t%s - getFlag(%X,%d) == 1; actual => %d == 1", TEST[isEqual], val, 1, i);
+    getFlag(logger, val, 2, i);
+    test(i == 0b0000);
+    log_amx("\t%s - getFlag(%X,%d) == 0; actual => %d == 0", TEST[isEqual], val, 2, i);
+    getFlag(logger, val, 3, i);
+    test(i == 0b0100);
+    log_amx("\t%s - getFlag(%X,%d) == 4; actual => %d == 4", TEST[isEqual], val, 3, i);
+    getFlag(logger, val, 4, i);
+    test(i == 0b0000);
+    log_amx("\t%s - getFlag(%X,%d) == 0; actual => %d == 0", TEST[isEqual], val, 4, i);
+
+    val = 0b0101;
+    isFlagSet(logger, val, 1, b);
+    test(b);
+    log_amx("\t%s - isFlagSet(%X,%d); actual => %d", TEST[isEqual], val, 1, b);
+    isFlagSet(logger, val, 2, b);
+    test(!b);
+    log_amx("\t%s - !isFlagSet(%X,%d); actual => %d", TEST[isEqual], val, 2, b);
+    isFlagSet(logger, val, 3, b);
+    test(b);
+    log_amx("\t%s - isFlagSet(%X,%d); actual => %d", TEST[isEqual], val, 3, b);
+    isFlagSet(logger, val, 4, b);
+    test(!b);
+    log_amx("\t%s - !isFlagSet(%X,%d); actual => %d", TEST[isEqual], val, 4, b);
+
+    val = 0b0101;
+    setFlag(logger, val, 1);
+    test(val == 0b0101);
+    log_amx("\t%s - setFlag(%X,%d) == 5; actual => %d == 5", TEST[isEqual], val, 1, val);
+    setFlag(logger, val, 2);
+    test(val == 0b0111);
+    log_amx("\t%s - setFlag(%X,%d) == 7; actual => %d == 7", TEST[isEqual], val, 2, val);
+    setFlag(logger, val, 3);
+    test(val == 0b0111);
+    log_amx("\t%s - setFlag(%X,%d) == 7; actual => %d == 7", TEST[isEqual], val, 3, val);
+    setFlag(logger, val, 4);
+    test(val == 0b1111);
+    log_amx("\t%s - setFlag(%X,%d) == 15; actual => %d == 15", TEST[isEqual], val, 4, val);
+
+    val = 0b0101;
+    unsetFlag(logger, val, 1);
+    test(val == 0b0100);
+    log_amx("\t%s - unsetFlag(%X,%d) == 4; actual => %d == 4", TEST[isEqual], val, 1, val);
+    unsetFlag(logger, val, 2);
+    test(val == 0b0100);
+    log_amx("\t%s - unsetFlag(%X,%d) == 4; actual => %d == 4", TEST[isEqual], val, 2, val);
+    unsetFlag(logger, val, 3);
+    test(val == 0b0000);
+    log_amx("\t%s - unsetFlag(%X,%d) == 0; actual => %d == 0", TEST[isEqual], val, 3, val);
+    unsetFlag(logger, val, 4);
+    test(val == 0b0000);
+    log_amx("\t%s - unsetFlag(%X,%d) == 0; actual => %d == 0", TEST[isEqual], val, 4, val);
+
+    val = 0b0101;
+    toggleFlag(logger, val, 1);
+    test(val == 0b0100);
+    log_amx("\t%s - toggleFlag(%X,%d) == 4; actual => %d == 4", TEST[isEqual], val, 1, val);
+    toggleFlag(logger, val, 2);
+    test(val == 0b0110);
+    log_amx("\t%s - toggleFlag(%X,%d) == 6; actual => %d == 6", TEST[isEqual], val, 2, val);
+    toggleFlag(logger, val, 3);
+    test(val == 0b0010);
+    log_amx("\t%s - toggleFlag(%X,%d) == 2; actual => %d == 2", TEST[isEqual], val, 3, val);
+    toggleFlag(logger, val, 4);
+    test(val == 0b1010);
+    log_amx("\t%s - toggleFlag(%X,%d) == 10; actual => %d == 10", TEST[isEqual], val, 4, val);
+
+    val = 0;
+    new id = 31;
+    isFlagSet(logger, val, id, b);
+    test(!b);
+    log_amx("\t%s - !isFlagSet(%X,%d); actual => %d", TEST[isEqual], val, id, b);
+    setFlag(logger, val, id);
+    test(val == 1<<30);
+    log_amx("\t%s - setFlag(%X,%d) == 1<<30; actual => %d == %d", TEST[isEqual], val, id, 1<<30, val);
+    id = 32;
+    setFlag(logger, val, id);
+    test(val == 1<<31|1<<30);
+    log_amx("\t%s - setFlag(%X,%d) == 1<<31|1<<30; actual => %d == %d", TEST[isEqual], val, id, 1<<31|1<<30, val);
+}
+
+test_exceptions() {
+    new bool: b;
+    new Exception: exception;
+    new val = 0b0101;
+
+    log_amx("Testing exceptions");
+
+    exception = isFlagSet(logger, val, 1, b);
+    test(exception == Success);
+    log_amx("\t%s - isFlagSet(%X,%d) == Success;", TEST[isEqual], val, 1);
+
+    exception = isFlagSet(logger, val, 2, b);
+    test(!exception);
+    log_amx("\t%s - !isFlagSet(%X,%d) <= 0;", TEST[isEqual], val, 2);
+
+    exception = isFlagSet(logger, val, 0, b);
+    test(exception == IllegalArgumentException);
+    log_amx("\t%s - isFlagSet(%X,%d) == IllegalArgumentException;", TEST[isEqual], val, 0);
+
+    exception = isFlagSet(logger, val, cellbits+1, b);
+    test(exception != Success);
+    log_amx("\t%s - isFlagSet(%X,%d) > Success;", TEST[isEqual], val, cellbits+1);
 }

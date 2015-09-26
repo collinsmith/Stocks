@@ -46,7 +46,7 @@ stock bool: numParamsGreaterEqual(Logger: logger, max, test) {
 
 stock bool: numParamsInRange(Logger: logger, min, max, test) {
     if (min > max) {
-        LoggerLogError(logger, "Illegal argument exception! max(%d) < min(%d)", max, min);
+        LoggerLogError(logger, "Illegal argument exception: max(%d) < min(%d)", max, min);
         return false;
     }
 
