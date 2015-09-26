@@ -1,4 +1,5 @@
 #include <amxmodx>
+#include <logger>
 #include "include/dynamic_param_stocks.inc"
 #include "include/path_stocks.inc"
 #include "include/string_stocks.inc"
@@ -10,6 +11,7 @@ static const TEST[][] = {
 
 static tests, passed;
 static bool: isEqual;
+static Logger: logger;
 
 public plugin_init() {
     register_plugin("stock tests", "0.0.1", "Tirant");
@@ -17,12 +19,14 @@ public plugin_init() {
     log_amx("Testing Stocks");
 
     tests = passed = 0;
+    logger = LoggerCreate();
 
     test_stringGetOrDefault();
     test_stringJoin();
     test_getPath();
     test_fixPath();
-    
+    test_dynamicParamsStocks();
+
     log_amx("Finished Stocks tests: %s (%d/%d)", TEST[tests == passed], passed, tests);
 }
 
@@ -310,4 +314,68 @@ test_fixPath() {
     test_fixPath_path("this/is/a\\test");
     test_fixPath_path("this\\is/a\\test");
     test_fixPath_path("this\\is\\a\\test");
+}
+
+test_dynamicParamsStocks() {
+    log_amx("Testing dynamicParamsStocks");
+
+    test(numParamsEqual(logger, 0, 0));
+    log_amx("\t%s - numParamsEqual(0, 0);", TEST[isEqual]);
+    test(!numParamsEqual(logger, 0, 1));
+    log_amx("\t%s - !numParamsEqual(0, 1);", TEST[isEqual]);
+    test(!numParamsEqual(logger, 1, 0));
+    log_amx("\t%s - !numParamsEqual(1, 0);", TEST[isEqual]);
+    test(numParamsEqual(logger, 1, 1));
+    log_amx("\t%s - numParamsEqual(1, 1);", TEST[isEqual]);
+
+    test(!numParamsFewer(logger, 0, 0));
+    log_amx("\t%s - !numParamsFewer(0, 0);", TEST[isEqual]);
+    test(!numParamsFewer(logger, 0, 1));
+    log_amx("\t%s - !numParamsFewer(0, 1);", TEST[isEqual]);
+    test(numParamsFewer(logger, 1, 0));
+    log_amx("\t%s - numParamsFewer(1, 0);", TEST[isEqual]);
+    test(!numParamsFewer(logger, 1, 1));
+    log_amx("\t%s - !numParamsFewer(1, 1);", TEST[isEqual]);
+
+    test(numParamsFewerEqual(logger, 0, 0));
+    log_amx("\t%s - numParamsFewerEqual(0, 0);", TEST[isEqual]);
+    test(!numParamsFewerEqual(logger, 0, 1));
+    log_amx("\t%s - !numParamsFewerEqual(0, 1);", TEST[isEqual]);
+    test(numParamsFewerEqual(logger, 1, 0));
+    log_amx("\t%s - numParamsFewerEqual(1, 0);", TEST[isEqual]);
+    test(numParamsFewerEqual(logger, 1, 1));
+    log_amx("\t%s - numParamsFewerEqual(1, 1);", TEST[isEqual]);
+
+    test(!numParamsGreater(logger, 0, 0));
+    log_amx("\t%s - !numParamsGreater(0, 0);", TEST[isEqual]);
+    test(numParamsGreater(logger, 0, 1));
+    log_amx("\t%s - numParamsGreater(0, 1);", TEST[isEqual]);
+    test(!numParamsGreater(logger, 1, 0));
+    log_amx("\t%s - !numParamsGreater(1, 0);", TEST[isEqual]);
+    test(!numParamsGreater(logger, 1, 1));
+    log_amx("\t%s - !numParamsGreater(1, 1);", TEST[isEqual]);
+
+    test(numParamsGreaterEqual(logger, 0, 0));
+    log_amx("\t%s - numParamsGreaterEqual(0, 0);", TEST[isEqual]);
+    test(numParamsGreaterEqual(logger, 0, 1));
+    log_amx("\t%s - numParamsGreaterEqual(0, 1);", TEST[isEqual]);
+    test(!numParamsGreaterEqual(logger, 1, 0));
+    log_amx("\t%s - !numParamsGreaterEqual(1, 0);", TEST[isEqual]);
+    test(numParamsGreaterEqual(logger, 1, 1));
+    log_amx("\t%s - numParamsGreaterEqual(1, 1);", TEST[isEqual]);
+
+    test(numParamsInRange(logger, 0, 0, 0));
+    log_amx("\t%s - numParamsInRange(0, 0, 0);", TEST[isEqual]);
+    test(!numParamsInRange(logger, 0, 0, 1));
+    log_amx("\t%s - !numParamsInRange(0, 0, 1);", TEST[isEqual]);
+    test(numParamsInRange(logger, 0, 1, 0));
+    log_amx("\t%s - numParamsInRange(0, 1, 0);", TEST[isEqual]);
+    test(numParamsInRange(logger, 0, 1, 1));
+    log_amx("\t%s - numParamsInRange(0, 1, 1);", TEST[isEqual]);
+    test(!numParamsInRange(logger, 1, 2, 0));
+    log_amx("\t%s - !numParamsInRange(1, 2, 0);", TEST[isEqual]);
+    test(numParamsInRange(logger, 6, 10, 8));
+    log_amx("\t%s - numParamsInRange(6, 10, 8);", TEST[isEqual]);
+    test(!numParamsInRange(logger, 1, 0, 0));
+    log_amx("\t%s - !numParamsInRange(1, 0, 0); (illegal arguments)", TEST[isEqual]);
 }
