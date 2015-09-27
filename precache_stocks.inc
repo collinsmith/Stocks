@@ -8,8 +8,11 @@
 #include <exception_handler>
 #include <fakemeta>
 
-#include "include/path_stocks.inc"
-#include "include/string_stocks.inc"
+#tryinclude <path_stocks>
+#tryinclude "include\\stocks\\path_stocks.inc"
+
+#tryinclude <string_stocks>
+#tryinclude "include\\stocks\\string_stocks.inc"
 
 stock const MODELS[] = "models";
 stock const PLAYER[] = "player";

@@ -1,11 +1,11 @@
 #include <amxmodx>
 #include <logger>
 #include <exception_handler>
-#include "include/dynamic_param_stocks.inc"
-#include "include/path_stocks.inc"
-#include "include/string_stocks.inc"
-#include "include/flag_stocks.inc"
-#include "include/precache_stocks.inc"
+#include "..\\dynamic_param_stocks.inc"
+#include "..\\path_stocks.inc"
+#include "..\\string_stocks.inc"
+#include "..\\flag_stocks.inc"
+#include "..\\precache_stocks.inc"
 
 static const TEST[][] = {
     "FAILED",
