@@ -92,7 +92,7 @@ stock bool: precacheModel(const model[]) {
                 model);
         return false;
     } else if (!file_exists(model)) {
-        Throw(IllegalArgumentException,
+        Throw(FileNotFoundException,
                 "model specified by path \"%s\" does not exist!",
                 model);
         return false;
@@ -116,7 +116,7 @@ stock bool:precache(const file[]) {
                 "file should not be empty!");
         return false;
     } else if (!file_exists(file)) {
-        Throw(IllegalArgumentException,
+        Throw(FileNotFoundException,
                 "file specified by path \"%s\" does not exist!",
                 file);
         return false;
