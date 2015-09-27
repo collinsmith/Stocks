@@ -5,6 +5,7 @@
 #include "include/path_stocks.inc"
 #include "include/string_stocks.inc"
 #include "include/flag_stocks.inc"
+#include "include/precache_stocks.inc"
 
 static const TEST[][] = {
     "FAILED",
@@ -25,11 +26,13 @@ public plugin_init() {
 
     test_stringGetOrDefault();
     test_stringJoin();
+    test_stringStartsWith();
     test_getPath();
     test_fixPath();
     test_dynamicParamsStocks();
     test_flagStocks();
     test_exceptions();
+    test_precacheStocks();
 
     log_amx("Finished Stocks tests: %s (%d/%d)", TEST[tests == passed], passed, tests);
 }
@@ -214,6 +217,28 @@ test_stringJoin() {
     log_amx("\t\t%s - strlen(\"%s\") == strlen(\"%s\"); actual => %d == %d", TEST[isEqual], pre2, temp2, l1, l2);
 }
 
+test_stringStartsWith() {
+    new string1[32];
+    new string2[32];
+
+    log_amx("Testing stringStartsWith");
+
+    string1 = "string";
+    string2 = "string";
+    test(stringStartsWith(string1, string2));
+    log_amx("\t%s - stringStartsWith(\"%s\", \"%s\");", TEST[isEqual], string1, string2);
+
+    string1 = "string";
+    string2 = "strin";
+    test(stringStartsWith(string1, string2));
+    log_amx("\t%s - stringStartsWith(\"%s\", \"%s\");", TEST[isEqual], string1, string2);
+
+    string1 = "strin";
+    string2 = "string";
+    test(!stringStartsWith(string1, string2));
+    log_amx("\t%s - !stringStartsWith(\"%s\", \"%s\");", TEST[isEqual], string1, string2);
+}
+
 countPATH_SEPARATOR(str[]) {
     new count = 0;
     for (new i = 0; str[i] != EOS; i++) {
@@ -239,9 +264,11 @@ countPATH_SEPARATOR_ALT(str[]) {
 test_getPath() {
     new len, testlen, count;
     new temp[32];
+    new str[64];
 
     log_amx("Testing getPath");
 
+    formatex(str, 63, "%s/%s/%s/%s", "this", "is", "a", "test");
     len = getPath(temp, sizeof temp, "this", "is", "a", "test");
     log_amx("\tgetPath(temp, sizeof temp, \"this\", \"is\", \"a\", \"test\"); temp = \"%s\"", temp);
     count = countPATH_SEPARATOR(temp);
@@ -250,7 +277,10 @@ test_getPath() {
     testlen = strlen(temp);
     test(len == testlen);
     log_amx("\t\t%s - strlen(temp) == getPath(...); actual => %d == %d", TEST[isEqual], testlen, len);
+    test(equal(str, temp, 31) > 0);
+    log_amx("\t\t%s - equal(str, temp, 31); actual => \"%s\" == \"%s\"", TEST[isEqual], str, temp);
 
+    formatex(str, 63, "%s/%s/%s/%s", "models", "player", "gign", "gign.mdl");
     len = getPath(temp, sizeof temp, "models", "player", "gign", "gign.mdl");
     log_amx("\tgetPath(temp, sizeof temp, \"models\", \"player\", \"gign\", \"gign.mdl\"); temp = \"%s\"", temp);
     count = countPATH_SEPARATOR(temp);
@@ -259,7 +289,10 @@ test_getPath() {
     testlen = strlen(temp);
     test(len == testlen);
     log_amx("\t\t%s - strlen(temp) == getPath(...); actual => %d == %d", TEST[isEqual], testlen, len);
+    test(equal(str, temp, 31) > 0);
+    log_amx("\t\t%s - equal(str, temp, 31); actual => \"%s\" == \"%s\"", TEST[isEqual], str, temp);
 
+    formatex(str, 63, "%s/%s", "sound", "test.wav");
     len = getPath(temp, sizeof temp, "sound", "test.wav");
     log_amx("\tgetPath(temp, sizeof temp, \"sound\", \"test.wav\"); temp = \"%s\"", temp);
     count = countPATH_SEPARATOR(temp);
@@ -268,7 +301,10 @@ test_getPath() {
     testlen = strlen(temp);
     test(len == testlen);
     log_amx("\t\t%s - strlen(temp) == getPath(...); actual => %d == %d", TEST[isEqual], testlen, len);
+    test(equal(str, temp, 31) > 0);
+    log_amx("\t\t%s - equal(str, temp, 31); actual => \"%s\" == \"%s\"", TEST[isEqual], str, temp);
 
+    formatex(str, 63, "%s", "server.cfg");
     len = getPath(temp, sizeof temp, "server.cfg");
     log_amx("\tgetPath(temp, sizeof temp, \"server.cfg\"); temp = \"%s\"", temp);
     count = countPATH_SEPARATOR(temp);
@@ -277,18 +313,26 @@ test_getPath() {
     testlen = strlen(temp);
     test(len == testlen);
     log_amx("\t\t%s - strlen(temp) == getPath(...); actual => %d == %d", TEST[isEqual], testlen, len);
+    test(equal(str, temp, 31) > 0);
+    log_amx("\t\t%s - equal(str, temp, 31); actual => \"%s\" == \"%s\"", TEST[isEqual], str, temp);
 
+    formatex(str, 63, "%s", "12345678123456781234567812345678");
     len = getPath(temp, sizeof temp, "12345678123456781234567812345678");
     log_amx("\tgetPath(temp, sizeof temp, \"12345678123456781234567812345678\"); temp = \"%s\"", temp);
     testlen = strlen(temp);
     test(len == testlen);
     log_amx("\t\t%s - strlen(temp) == getPath(...); actual => %d == %d", TEST[isEqual], testlen, len);
+    test(equal(str, temp, 31) > 0);
+    log_amx("\t\t%s - equal(str, temp, 31); actual => \"%s\" == \"%s\"", TEST[isEqual], str, temp);
 
+    formatex(str, 63, "%s/%s/%s/%s", "12345678", "12345678", "12345678", "12345678");
     len = getPath(temp, sizeof temp, "12345678", "12345678", "12345678", "12345678");
     log_amx("\tgetPath(temp, sizeof temp, \"12345678\", \"12345678\", \"12345678\", \"12345678\"); temp = \"%s\"", temp);
     testlen = strlen(temp);
     test(len == testlen);
     log_amx("\t\t%s - strlen(temp) == getPath(...); actual => %d == %d", TEST[isEqual], testlen, len);
+    test(equal(str, temp, 31) > 0);
+    log_amx("\t\t%s - equal(str, temp, 31); actual => \"%s\" == \"%s\"", TEST[isEqual], str, temp);
 }
 
 test_fixPath_path(temp[], maxlen = sizeof temp) {
@@ -506,4 +550,41 @@ test_exceptions() {
         log_amx("\t%s - isFlagSet(%X,%d) throws IllegalArgumentException", TEST[isEqual], val, cellbits+1);
         TryHandle();
     } TryEnd();
+}
+
+test_precacheStocks() {
+    new temp[32];
+    new model[32];
+    new sound[32];
+    new str[64];
+
+    log_amx("Testing getPlayerModelPath");
+
+    model = "gign";
+    formatex(str, charsmax(str), "%s/%s/%s/%s.mdl", MODELS, PLAYER, model, model);
+    getPlayerModelPath(temp, _, model);
+    log_amx("\tgetPlayerModelPath(temp, _, \"%s\"); temp = \"%s\"", model, temp);
+    test(equal(temp, str) > 0);
+    log_amx("\t\t%s - equal(\"%s\", \"%s\"); actual => \"%s\"", TEST[isEqual], str, temp, temp);
+
+    model = "gign12345678";
+    formatex(str, charsmax(str), "%s/%s/%s/%s.mdl", MODELS, PLAYER, model, model);
+    getPlayerModelPath(temp, _, model);
+    log_amx("\tgetPlayerModelPath(temp, _, \"%s\"); temp = \"%s\"", model, temp);
+    test(equal(temp, str, 31) > 0);
+    log_amx("\t\t%s - equal(\"%s\", \"%s\", 31); actual => \"%s\"", TEST[isEqual], str, temp, temp);
+
+    model = "v_bowie";
+    formatex(str, charsmax(str), "%s/%s.mdl", MODELS, model);
+    getModelPath(temp, _, model);
+    log_amx("\tgetModelPath(temp, _, \"%s\"); temp = \"%s\"", model, temp);
+    test(equal(temp, str) > 0);
+    log_amx("\t\t%s - equal(\"%s\", \"%s\"); actual => \"%s\"", TEST[isEqual], str, temp, temp);
+
+    model = "v_bowie123456781234567812345678";
+    formatex(str, charsmax(str), "%s/%s.mdl", MODELS, model);
+    getModelPath(temp, _, model);
+    log_amx("\tgetModelPath(temp, _, \"%s\"); temp = \"%s\"", model, temp);
+    test(equal(temp, str, 31) > 0);
+    log_amx("\t\t%s - equal(\"%s\", \"%s\", 31); actual => \"%s\"", TEST[isEqual], str, temp, temp);
 }

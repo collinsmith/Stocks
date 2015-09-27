@@ -59,8 +59,9 @@ stock stringJoin(dst[], len = sizeof dst, const prefix[] = "[", const infix[] = 
     }
 
     tempLen += copy(dst[tempLen], len-tempLen, postfix);
-    dst[len-1] = EOS;
-    return tempLen-1;
+    tempLen = min(len-1, tempLen);
+    dst[tempLen] = EOS;
+    return tempLen;
 }
 
 /**
@@ -80,4 +81,20 @@ stock stringGetOrDefault(dst[], len = sizeof dst, const str[], const def[]) {
     }
 
     return copy(dst, len, str);
+}
+
+/**
+ * Tests whether or not a given string starts with a specified string.
+ * 
+ * @param str  String to check
+ * @param test Test string to check if {@param str} starts with
+ * 
+ * @return {@literal true} if it does, otherwise {@code false}
+ */
+stock bool: stringStartsWith(const str[], const test[]) {
+    new i, c1, c2;
+    for (i = 0, c1 = str[i], c2 = test[i]; c1 == c2 && c1 != EOS && c2 != EOS; i++, c1 = str[i], c2 = test[i]) {
+    }
+
+    return c2 == EOS;
 }

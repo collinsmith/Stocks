@@ -28,20 +28,16 @@
 stock getPath(dst[], len = sizeof dst, const first[], ...) {
     new tempLen = copy(dst, len, first);
     new numArgs = numargs();
-    if (numArgs == 3) {
-        dst[tempLen-1] = EOS;
-        return tempLen-1;
-    }
-
     for (new i = 3; i < numArgs && tempLen < len; i++) {
         dst[tempLen++] = PATH_SEPARATOR;
-        for (new j = 0, ch = getarg(i, j); ch != EOS && tempLen <= len; ch = getarg(i, ++j)) {
+        for (new j = 0, ch = getarg(i, j); ch != EOS && tempLen < len; ch = getarg(i, ++j)) {
             dst[tempLen++] = ch;
         }
     }
 
-    dst[tempLen-2] = EOS;
-    return tempLen-2;
+    tempLen = min(len-1, tempLen);
+    dst[tempLen] = EOS;
+    return tempLen;
 }
 
 /**
