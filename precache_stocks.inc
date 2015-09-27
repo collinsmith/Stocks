@@ -9,9 +9,11 @@
 #include <fakemeta>
 
 #tryinclude <path_stocks>
+#tryinclude "path_stocks.inc"
 #tryinclude "include\\stocks\\path_stocks.inc"
 
 #tryinclude <string_stocks>
+#tryinclude "string_stocks.inc"
 #tryinclude "include\\stocks\\string_stocks.inc"
 
 stock const MODELS[] = "models";
