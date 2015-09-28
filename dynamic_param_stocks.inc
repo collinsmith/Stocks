@@ -4,6 +4,7 @@
 #define _dynamic_param_stocks_included
 
 #include <logger>
+#include <exception_handler>
 
 /*******************************************************************************
  * STOCKS
@@ -14,7 +15,7 @@ stock bool: numParamsEqual(Logger: logger, expectation, test) {
         return true;
     }
 
-    LoggerLogError(logger, "Expected %d params, found %d.", expectation, test);
+    Throw(IllegalArgumentException, "Expected %d params, found %d.", expectation, test);
     return false;
 }
 
@@ -23,7 +24,7 @@ stock bool: numParamsFewer(Logger: logger, min, test) {
         return true;
     }
 
-    LoggerLogError(logger, "Expected fewer than %d params, found %d.", min, test);
+    Throw(IllegalArgumentException, "Expected fewer than %d params, found %d.", min, test);
     return false;
 }
 
@@ -36,7 +37,7 @@ stock bool: numParamsGreater(Logger: logger, max, test) {
         return true;
     }
 
-    LoggerLogError(logger, "Expected greater than %d params, found %d.", max, test);
+    Throw(IllegalArgumentException, "Expected greater than %d params, found %d.", max, test);
     return false;
 }
 
@@ -46,7 +47,7 @@ stock bool: numParamsGreaterEqual(Logger: logger, max, test) {
 
 stock bool: numParamsInRange(Logger: logger, min, max, test) {
     if (min > max) {
-        LoggerLogError(logger, "Illegal argument exception: max(%d) < min(%d)", max, min);
+        Throw(IllegalArgumentException, "max < min (%d < %d)", max, min);
         return false;
     }
 
@@ -54,6 +55,6 @@ stock bool: numParamsInRange(Logger: logger, min, max, test) {
         return true;
     }
 
-    LoggerLogError(logger, "Expected %d to %d params, found %d.", min, max, test);
+    Throw(IllegalArgumentException, "Expected %d to %d params, found %d.", min, max, test);
     return false;
 }
