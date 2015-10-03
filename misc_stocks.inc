@@ -12,6 +12,9 @@
  * STOCKS
  ******************************************************************************/
 
+/**
+ * Defines the character to use as a separator for registered console commands.
+ */
 #define CON_CMD_SEPARATOR '.'
 
 /**
