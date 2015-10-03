@@ -46,7 +46,7 @@ stock registerConCmd(
         new temp[64];
         new len = copy(temp, 31, prefix);
         temp[len++] = CON_CMD_SEPARATOR;
-        copy(temp[len], 31, prefix);
+        copy(temp[len], 31, command);
         register_concmd(
                 temp,
                 function,
