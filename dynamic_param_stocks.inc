@@ -18,6 +18,10 @@ stock bool: numParamsEqual(Logger: logger, expectation, test) {
     return false;
 }
 
+stock bool: hasNoParams(Logger: logger, test) {
+    return numParamsEqual(Logger: logger, 0, test);
+}
+
 stock bool: numParamsFewer(Logger: logger, min, test) {
     if (test < min) {
         return true;
