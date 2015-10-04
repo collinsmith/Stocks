@@ -169,3 +169,54 @@ stock toggleFlags(&field, any: ...) {
 
     return field;
 }
+
+/**
+ * Check if one and only one of the passed flags is set in the given field and
+ * returns the bit which is set.
+ *
+ * @param field Bitwise field to use
+ * @param flag1 First flag to check
+ *
+ * @return bit number which is set, or {@literal 0} if none or more than one is
+ *         set
+ *
+ * @see #isXorFlag
+ */
+stock getXorFlag(field, flag1, any: ...) {
+    new flag = 0;
+    new const numArgs = numargs();
+    for (new i = 1, arg = getarg(i); i < numArgs; arg = getarg(++i)) {
+        if (isFlagSet(field, arg) && !flag) {
+            flag = arg;
+        } else if (flag) {
+            return 0;
+        }
+    }
+
+    return flag;
+}
+
+/**
+ * Check if one and only one of the passed flags is set in the given field.
+ *
+ * @param field Bitwise field to use
+ * @param flag1 First flag to check
+ *
+ * @return {@literal true} if one and only one flag is set, otherwise {@literal
+ *         false}
+ *
+ * @see #getXorFlag
+ */
+stock bool: isXorFlag(field, flag1, any: ...) {
+    new flag = 0;
+    new const numArgs = numargs();
+    for (new i = 1, arg = getarg(i); i < numArgs; arg = getarg(++i)) {
+        if (isFlagSet(field, arg) && !flag) {
+            flag = arg;
+        } else if (flag) {
+            return false;
+        }
+    }
+
+    return flag > 0;
+}
