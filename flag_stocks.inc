@@ -147,12 +147,12 @@ stock setFlags(&field, any: ...) {
 }
 
 /**
- * Macro definition of {@link #unsetFlags}
+ * Macro definition of {@link #unsetFlag}
  */
 stock unsetFlags(&field, any: ...) {
     new const numArgs = numargs();
     for (new i = 1; i < numArgs; i++) {
-        unsetFlags(field, getarg(i));
+        unsetFlag(field, getarg(i));
     }
 
     return field;
