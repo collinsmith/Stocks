@@ -213,7 +213,7 @@ stock bool: isXorFlag(field, any: ...) {
         if (isFlagSet(field, arg)) {
             switch (flag) {
                 case 0: flag = arg;
-                default: return 0;
+                default: return false;
             }
         }
     }
