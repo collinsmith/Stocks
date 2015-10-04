@@ -119,3 +119,41 @@ stock toggleFlag(&field, flag) {
     checkFlag(flag);
     return field ^= (1<<(flag-1));
 }
+
+stock bool: areFlagsSet(field, any: ...) {
+    new const numArgs = numargs();
+    for (new i = 1; i < numArgs; i++) {
+        if (!isFlagSet(field, getarg(i))) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+stock setFlags(&field, any: ...) {
+    new const numArgs = numargs();
+    for (new i = 1; i < numArgs; i++) {
+        setFlag(field, getarg(i));
+    }
+
+    return field;
+}
+
+stock unsetFlags(&field, any: ...) {
+    new const numArgs = numargs();
+    for (new i = 1; i < numArgs; i++) {
+        unsetFlags(field, getarg(i));
+    }
+
+    return field;
+}
+
+stock toggleFlags(&field, any: ...) {
+    new const numArgs = numargs();
+    for (new i = 1; i < numArgs; i++) {
+        toggleFlag(field, getarg(i));
+    }
+
+    return field;
+}
