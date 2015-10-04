@@ -120,6 +120,9 @@ stock toggleFlag(&field, flag) {
     return field ^= (1<<(flag-1));
 }
 
+/**
+ * Macro definition of {@link #isFlagSet}
+ */
 stock bool: areFlagsSet(field, any: ...) {
     new const numArgs = numargs();
     for (new i = 1; i < numArgs; i++) {
@@ -131,6 +134,9 @@ stock bool: areFlagsSet(field, any: ...) {
     return true;
 }
 
+/**
+ * Macro definition of {@link #setFlag}
+ */
 stock setFlags(&field, any: ...) {
     new const numArgs = numargs();
     for (new i = 1; i < numArgs; i++) {
@@ -140,6 +146,9 @@ stock setFlags(&field, any: ...) {
     return field;
 }
 
+/**
+ * Macro definition of {@link #unsetFlags}
+ */
 stock unsetFlags(&field, any: ...) {
     new const numArgs = numargs();
     for (new i = 1; i < numArgs; i++) {
@@ -149,6 +158,9 @@ stock unsetFlags(&field, any: ...) {
     return field;
 }
 
+/**
+ * Macro definition of {@link #toggleFlag}
+ */
 stock toggleFlags(&field, any: ...) {
     new const numArgs = numargs();
     for (new i = 1; i < numArgs; i++) {
