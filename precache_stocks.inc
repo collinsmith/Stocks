@@ -5,8 +5,8 @@
 
 #include <amxmodx>
 #include <amxmisc>
-#include <exception_handler>
 #include <fakemeta>
+#include <logger>
 
 #tryinclude <path_stocks>
 #tryinclude "include\\stocks\\path_stocks.inc"
@@ -36,9 +36,15 @@ stock const SOUND[] = "sound";
  * 
  * @throws IllegalArgumentException if the model specified is empty
  */
-stock getPlayerModelPath(dst[], len = sizeof dst, const model[]) {
+stock getPlayerModelPath(dst[], len = sizeof dst, const model[], const Logger: logger = Invalid_Logger) {
     if (isStringEmpty(model)) {
-        Throw(IllegalArgumentException, "model should not be empty!");
+        if (logger != Invalid_Logger) {
+            LoggerLogError(logger,
+                    "IllegalArgumentException: model should not be empty!");
+        } else {
+            LoggerLogError(logger,
+                    "IllegalArgumentException: model should not be empty!");
+        }
     }
 
     new tempLen = getPath(dst, len, MODELS, PLAYER, model, model);
@@ -60,9 +66,15 @@ stock getPlayerModelPath(dst[], len = sizeof dst, const model[]) {
  * 
  * @throws IllegalArgumentException if the model specified is empty
  */
-stock getModelPath(dst[], len = sizeof dst, const model[]) {
+stock getModelPath(dst[], len = sizeof dst, const model[], const Logger: logger = Invalid_Logger) {
     if (isStringEmpty(model)) {
-        Throw(IllegalArgumentException, "model should not be empty!");
+        if (logger != Invalid_Logger) {
+            LoggerLogError(logger,
+                    "IllegalArgumentException: model should not be empty!");
+        } else {
+            LoggerLogError(logger,
+                    "IllegalArgumentException: model should not be empty!");
+        }
     }
 
     new tempLen = getPath(dst, len, MODELS, model);
@@ -83,21 +95,43 @@ stock getModelPath(dst[], len = sizeof dst, const model[]) {
  *             not begin with "models", or if the model specified by the path
  *             does not exist
  */
-stock bool: precacheModel(const model[]) {
+stock bool: precacheModel(const model[], const Logger: logger = Invalid_Logger) {
     if (isStringEmpty(model)) {
-        Throw(IllegalArgumentException,
-                "model should not be empty!");
+        if (logger != Invalid_Logger) {
+            LoggerLogError(logger,
+                    "IllegalArgumentException: model should not be empty!");
+        } else {
+            LoggerLogError(logger,
+                    "IllegalArgumentException: model should not be empty!");
+        }
+        
         return false;
     } else if (stringStartsWith(model, MODELS)) {
-        Throw(IllegalArgumentException,
-                "model path should start with \"%s\"! (\"%s\")",
-                MODELS,
-                model);
+        if (logger != Invalid_Logger) {
+            LoggerLogError(logger,
+                    "IllegalArgumentException: model path should start with \"%s\"! (\"%s\")",
+                    MODELS,
+                    model);
+        } else {
+            LoggerLogError(logger,
+                    "IllegalArgumentException: model path should start with \"%s\"! (\"%s\")",
+                    MODELS,
+                    model);
+        }
+        
         return false;
     } else if (!file_exists(model)) {
-        Throw(FileNotFoundException,
-                "model specified by path \"%s\" does not exist!",
-                model);
+        if (logger != Invalid_Logger) {
+            LoggerLogError(logger,
+                    "IllegalArgumentException: model path should start with \"%s\"! (\"%s\")",
+                    MODELS,
+                    model);
+        } else {
+            LoggerLogError(logger,
+                    "IllegalArgumentException: model specified by path \"%s\" does not exist!",
+                    model);
+        }
+        
         return false;
     }
 
@@ -113,15 +147,28 @@ stock bool: precacheModel(const model[]) {
  * @return     {@literal true} if the file was precached, otherwise {@literal
  *                  false}
  */
-stock bool:precache(const file[]) {
+stock bool:precache(const file[], const Logger: logger = Invalid_Logger) {
     if (isStringEmpty(file)) {
-        Throw(IllegalArgumentException,
-                "file should not be empty!");
+        if (logger != Invalid_Logger) {
+            LoggerLogError(logger,
+                    "IllegalArgumentException: file should not be empty!");
+        } else {
+            LoggerLogError(logger,
+                    "IllegalArgumentException: file should not be empty!");
+        }
+        
         return false;
     } else if (!file_exists(file)) {
-        Throw(FileNotFoundException,
-                "file specified by path \"%s\" does not exist!",
-                file);
+        if (logger != Invalid_Logger) {
+            LoggerLogError(logger,
+                    "IllegalArgumentException: file specified by path \"%s\" does not exist!",
+                    file);
+        } else {
+            LoggerLogError(logger,
+                    "IllegalArgumentException: file specified by path \"%s\" does not exist!",
+                    file);
+        }
+
         return false;
     }
 
@@ -138,8 +185,8 @@ stock bool:precache(const file[]) {
  * @return      {@literal true} if the sound was precached, otherwise {@literal
  *                  false}
  */
-stock bool: precacheSound(const sound[]) {
+stock bool: precacheSound(const sound[], const Logger: logger = Invalid_Logger) {
     new path[256];
     getPath(path, _, SOUND, sound);
-    return precache(path);
+    return precache(path, logger);
 }

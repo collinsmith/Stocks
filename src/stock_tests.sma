@@ -1,6 +1,6 @@
 #include <amxmodx>
 #include <logger>
-#include <exception_handler>
+//#include <exception_handler>
 #include "..\\dynamic_param_stocks.inc"
 #include "..\\path_stocks.inc"
 #include "..\\string_stocks.inc"
@@ -31,7 +31,7 @@ public plugin_init() {
     test_fixPath();
     test_dynamicParamsStocks();
     test_flagStocks();
-    test_exceptions();
+    //test_exceptions();
     test_precacheStocks();
 
     log_amx("Finished Stocks tests: %s (%d/%d)", TEST[tests == passed], passed, tests);
@@ -435,112 +435,112 @@ test_flagStocks() {
     log_amx("Testing flag stocks");
 
     new val = 0b0101;
-    i = getFlag(val, 1);
+    i = getFlag(logger, val, 1);
     test(i == 0b0001);
     log_amx("\t%s - getFlag(%X,%d) == 1; actual => %d == 1", TEST[isEqual], val, 1, i);
-    i = getFlag(val, 2);
+    i = getFlag(logger, val, 2);
     test(i == 0b0000);
     log_amx("\t%s - getFlag(%X,%d) == 0; actual => %d == 0", TEST[isEqual], val, 2, i);
-    i = getFlag(val, 3);
+    i = getFlag(logger, val, 3);
     test(i == 0b0100);
     log_amx("\t%s - getFlag(%X,%d) == 4; actual => %d == 4", TEST[isEqual], val, 3, i);
-    i = getFlag(val, 4);
+    i = getFlag(logger, val, 4);
     test(i == 0b0000);
     log_amx("\t%s - getFlag(%X,%d) == 0; actual => %d == 0", TEST[isEqual], val, 4, i);
 
     val = 0b0101;
-    b = isFlagSet(val, 1);
+    b = isFlagSet(logger, val, 1);
     test(b);
     log_amx("\t%s - isFlagSet(%X,%d); actual => %d", TEST[isEqual], val, 1, b);
-    b = isFlagSet(val, 2);
+    b = isFlagSet(logger, val, 2);
     test(!b);
     log_amx("\t%s - !isFlagSet(%X,%d); actual => %d", TEST[isEqual], val, 2, b);
-    b = isFlagSet(val, 3);
+    b = isFlagSet(logger, val, 3);
     test(b);
     log_amx("\t%s - isFlagSet(%X,%d); actual => %d", TEST[isEqual], val, 3, b);
-    b = isFlagSet(val, 4);
+    b = isFlagSet(logger, val, 4);
     test(!b);
     log_amx("\t%s - !isFlagSet(%X,%d); actual => %d", TEST[isEqual], val, 4, b);
 
     val = 0b0101;
-    setFlag(val, 1);
+    setFlag(logger, val, 1);
     test(val == 0b0101);
     log_amx("\t%s - setFlag(%X,%d) == 5; actual => %d == 5", TEST[isEqual], val, 1, val);
-    setFlag(val, 2);
+    setFlag(logger, val, 2);
     test(val == 0b0111);
     log_amx("\t%s - setFlag(%X,%d) == 7; actual => %d == 7", TEST[isEqual], val, 2, val);
-    setFlag(val, 3);
+    setFlag(logger, val, 3);
     test(val == 0b0111);
     log_amx("\t%s - setFlag(%X,%d) == 7; actual => %d == 7", TEST[isEqual], val, 3, val);
-    setFlag(val, 4);
+    setFlag(logger, val, 4);
     test(val == 0b1111);
     log_amx("\t%s - setFlag(%X,%d) == 15; actual => %d == 15", TEST[isEqual], val, 4, val);
 
     val = 0b0101;
-    unsetFlag(val, 1);
+    unsetFlag(logger, val, 1);
     test(val == 0b0100);
     log_amx("\t%s - unsetFlag(%X,%d) == 4; actual => %d == 4", TEST[isEqual], val, 1, val);
-    unsetFlag(val, 2);
+    unsetFlag(logger, val, 2);
     test(val == 0b0100);
     log_amx("\t%s - unsetFlag(%X,%d) == 4; actual => %d == 4", TEST[isEqual], val, 2, val);
-    unsetFlag(val, 3);
+    unsetFlag(logger, val, 3);
     test(val == 0b0000);
     log_amx("\t%s - unsetFlag(%X,%d) == 0; actual => %d == 0", TEST[isEqual], val, 3, val);
-    unsetFlag(val, 4);
+    unsetFlag(logger, val, 4);
     test(val == 0b0000);
     log_amx("\t%s - unsetFlag(%X,%d) == 0; actual => %d == 0", TEST[isEqual], val, 4, val);
 
     val = 0b0101;
-    toggleFlag(val, 1);
+    toggleFlag(logger, val, 1);
     test(val == 0b0100);
     log_amx("\t%s - toggleFlag(%X,%d) == 4; actual => %d == 4", TEST[isEqual], val, 1, val);
-    toggleFlag(val, 2);
+    toggleFlag(logger, val, 2);
     test(val == 0b0110);
     log_amx("\t%s - toggleFlag(%X,%d) == 6; actual => %d == 6", TEST[isEqual], val, 2, val);
-    toggleFlag(val, 3);
+    toggleFlag(logger, val, 3);
     test(val == 0b0010);
     log_amx("\t%s - toggleFlag(%X,%d) == 2; actual => %d == 2", TEST[isEqual], val, 3, val);
-    toggleFlag(val, 4);
+    toggleFlag(logger, val, 4);
     test(val == 0b1010);
     log_amx("\t%s - toggleFlag(%X,%d) == 10; actual => %d == 10", TEST[isEqual], val, 4, val);
 
     val = 0b0000;
-    setFlags(val, 1, 3);
+    setFlags(logger, val, 1, 3);
     test(val == 0b0101);
     log_amx("\t%s - setFlags(%X, %d, %d) == 5; actual => %d == 5", TEST[isEqual], val, 1, 3, val);
-    test(getXorFlag(val, 1, 2, 4) == 1);
-    log_amx("\t%s - getXorFlag(%X, %d, %d, %d) == 1; actual => %d == 1", TEST[isEqual], val, 1, 2, 4, getXorFlag(val, 1, 2, 4));
-    test(isXorFlag(val, 1, 2, 4));
+    test(getXorFlag(logger, val, 1, 2, 4) == 1);
+    log_amx("\t%s - getXorFlag(%X, %d, %d, %d) == 1; actual => %d == 1", TEST[isEqual], val, 1, 2, 4, getXorFlag(logger, val, 1, 2, 4));
+    test(isXorFlag(logger, val, 1, 2, 4));
     log_amx("\t%s - isXorFlag(%X, %d, %d, %d);", TEST[isEqual], val, 1, 2, 4);
-    test(getXorFlag(val, 2, 3, 4) == 3);
-    log_amx("\t%s - getXorFlag(%X, %d, %d, %d) == 1; actual => %d == 1", TEST[isEqual], val, 2, 3, 4, getXorFlag(val, 2, 3, 4));
-    test(isXorFlag(val, 2, 3, 4));
+    test(getXorFlag(logger, val, 2, 3, 4) == 3);
+    log_amx("\t%s - getXorFlag(%X, %d, %d, %d) == 1; actual => %d == 1", TEST[isEqual], val, 2, 3, 4, getXorFlag(logger, val, 2, 3, 4));
+    test(isXorFlag(logger, val, 2, 3, 4));
     log_amx("\t%s - isXorFlag(%X, %d, %d, %d);", TEST[isEqual], val, 2, 3, 4);
-    test(getXorFlag(val, 1, 3, 4) == 0);
-    log_amx("\t%s - getXorFlag(%X, %d, %d, %d) == 0; actual => %d == 0", TEST[isEqual], val, 1, 3, 4, getXorFlag(val, 1, 3, 4));
-    test(!isXorFlag(val, 1, 3, 4));
+    test(getXorFlag(logger, val, 1, 3, 4) == 0);
+    log_amx("\t%s - getXorFlag(%X, %d, %d, %d) == 0; actual => %d == 0", TEST[isEqual], val, 1, 3, 4, getXorFlag(logger, val, 1, 3, 4));
+    test(!isXorFlag(logger, val, 1, 3, 4));
     log_amx("\t%s - !isXorFlag(%X, %d, %d, %d);", TEST[isEqual], val, 1, 3, 4);
-    test(getXorFlag(val, 2, 4) == 0);
-    log_amx("\t%s - getXorFlag(%X, %d, %d) == 0; actual => %d == 0", TEST[isEqual], val, 2, 4, getXorFlag(val, 2, 4));
-    test(!isXorFlag(val, 2, 4));
+    test(getXorFlag(logger, val, 2, 4) == 0);
+    log_amx("\t%s - getXorFlag(%X, %d, %d) == 0; actual => %d == 0", TEST[isEqual], val, 2, 4, getXorFlag(logger, val, 2, 4));
+    test(!isXorFlag(logger, val, 2, 4));
     log_amx("\t%s - !isXorFlag(%X, %d, %d);", TEST[isEqual], val, 2, 4);
-    test(areFlagsSet(val, 1, 3));
+    test(areFlagsSet(logger, val, 1, 3));
     log_amx("\t%s - areFlagsSet(%X, %d, %d); actual => %d == 0x?1?1", TEST[isEqual], val, 1, 3, val);
-    unsetFlags(val, 1, 4);
+    unsetFlags(logger, val, 1, 4);
     log_amx("\t%s - unsetFlags(%X, %d, %d) == 4; actual => %d == 4", TEST[isEqual], val, 1, 4, val);
-    test(!areFlagsSet(val, 1, 3));
+    test(!areFlagsSet(logger, val, 1, 3));
     log_amx("\t%s - !areFlagsSet(%X, %d, %d); actual => %d == 0x?1?1", TEST[isEqual], val, 1, 3, val);
 
     val = 0;
     new id = 31;
-    b = isFlagSet(val, id);
+    b = isFlagSet(logger, val, id);
     test(!b);
     log_amx("\t%s - !isFlagSet(%X,%d); actual => %d", TEST[isEqual], val, id, b);
-    setFlag(val, id);
+    setFlag(logger, val, id);
     test(val == 1<<30);
     log_amx("\t%s - setFlag(%X,%d) == 1<<30; actual => %d == %d", TEST[isEqual], val, id, 1<<30, val);
     id = 32;
-    setFlag(val, id);
+    setFlag(logger, val, id);
     test(val == 1<<31|1<<30);
     log_amx("\t%s - setFlag(%X,%d) == 1<<31|1<<30; actual => %d == %d", TEST[isEqual], val, id, 1<<31|1<<30, val);
 }
@@ -551,28 +551,28 @@ test_exceptions() {
     log_amx("Testing exceptions");
 
     TryBegin(logger); {
-        isFlagSet(val, 1);
+        isFlagSet(logger, val, 1);
         test(!TryCatch("IllegalArgumentException"));
         log_amx("\t%s - isFlagSet(%X,%d) does not throw IllegalArgumentException", TEST[isEqual], val, 1);
         TryHandle();
     } TryEnd();
 
     TryBegin(logger); {
-        isFlagSet(val, 2);
+        isFlagSet(logger, val, 2);
         test(!TryCatch(""));
         log_amx("\t%s - isFlagSet(%X,%d) does not throw IllegalArgumentException", TEST[isEqual], val, 2);
         TryHandle();
     } TryEnd();
 
     TryBegin(logger); {
-        isFlagSet(val, 0);
+        isFlagSet(logger, val, 0);
         test(TryCatch("IllegalArgumentException"));
         log_amx("\t%s - isFlagSet(%X,%d) throws IllegalArgumentException", TEST[isEqual], val, 0);
         TryHandle();
     } TryEnd();
 
     TryBegin(logger); {
-        isFlagSet(val, cellbits+1);
+        isFlagSet(logger, val, cellbits+1);
         test(TryCatch(""));
         log_amx("\t%s - isFlagSet(%X,%d) throws IllegalArgumentException", TEST[isEqual], val, cellbits+1);
         TryHandle();

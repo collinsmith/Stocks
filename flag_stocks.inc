@@ -4,7 +4,6 @@
 #define _flag_stocks_included
 
 #include <logger>
-#include <exception_handler>
 
 /*******************************************************************************
  * STOCKS
@@ -22,17 +21,32 @@
  * 
  * @throws IllegalArgumentException when the bit is not valid.
  */
-static stock bool: checkFlag(flag) {
+static stock bool: checkFlag(const Logger: logger = Invalid_Logger, flag) {
     if (flag <= 0) {
-        Throw(IllegalArgumentException,
-                "flag must be > 0; flag=%d",
-                flag);
+        if (logger != Invalid_Logger) {
+            LoggerLogError(logger,
+                    "IllegalArgumentException: flag must be > 0; flag=%d",
+                    flag);
+        } else {
+            log_error(AMX_ERR_PARAMS,
+                    "IllegalArgumentException: flag must be > 0; flag=%d",
+                    flag);
+        }
+
         return false;
     } else if (flag > cellbits) {
-        Throw(IllegalArgumentException,
-                "flag must be <= %d; flag=%d",
-                cellbits,
-                flag);
+        if (logger != Invalid_Logger) {
+            LoggerLogError(logger,
+                    "IllegalArgumentException: flag must be <= %d; flag=%d",
+                    cellbits,
+                    flag);
+        } else {
+            log_error(AMX_ERR_PARAMS,
+                    "IllegalArgumentException: flag must be <= %d; flag=%d",
+                    cellbits,
+                    flag);
+        }
+
         return false;
     }
 
@@ -51,8 +65,8 @@ static stock bool: checkFlag(flag) {
  * 
  * @see #isFlagSet(cell,cell);
  */
-stock getFlag(field, flag) {
-    checkFlag(flag);
+stock getFlag(const Logger: logger = Invalid_Logger, field, flag) {
+    checkFlag(logger, flag);
     return field & (1<<(flag-1));
 }
 
@@ -70,8 +84,8 @@ stock getFlag(field, flag) {
  * 
  * @see #getFlag(cell,cell);
  */
-stock bool: isFlagSet(field, flag) {
-    return getFlag(field, flag) != 0;
+stock bool: isFlagSet(const Logger: logger = Invalid_Logger, field, flag) {
+    return getFlag(logger, field, flag) != 0;
 }
 
 /**
@@ -84,8 +98,8 @@ stock bool: isFlagSet(field, flag) {
  * 
  * @throws IllegalArgumentException when the bit is not valid.
  */
-stock setFlag(&field, flag) {
-    checkFlag(flag);
+stock setFlag(const Logger: logger = Invalid_Logger, &field, flag) {
+    checkFlag(logger, flag);
     return field |= (1<<(flag-1));
 }
 
@@ -99,8 +113,8 @@ stock setFlag(&field, flag) {
  * 
  * @throws IllegalArgumentException when the bit is not valid.
  */
-stock unsetFlag(&field, flag) {
-    checkFlag(flag);
+stock unsetFlag(const Logger: logger = Invalid_Logger, &field, flag) {
+    checkFlag(logger, flag);
     return field &= ~(1<<(flag-1));
 }
 
@@ -115,18 +129,18 @@ stock unsetFlag(&field, flag) {
  * 
  * @throws IllegalArgumentException when the bit is not valid.
  */
-stock toggleFlag(&field, flag) {
-    checkFlag(flag);
+stock toggleFlag(const Logger: logger = Invalid_Logger, &field, flag) {
+    checkFlag(logger, flag);
     return field ^= (1<<(flag-1));
 }
 
 /**
  * Macro definition of {@link #isFlagSet}
  */
-stock bool: areFlagsSet(field, any: ...) {
+stock bool: areFlagsSet(const Logger: logger = Invalid_Logger, field, any: ...) {
     new const numArgs = numargs();
     for (new i = 1; i < numArgs; i++) {
-        if (!isFlagSet(field, getarg(i))) {
+        if (!isFlagSet(logger, field, getarg(i))) {
             return false;
         }
     }
@@ -137,10 +151,10 @@ stock bool: areFlagsSet(field, any: ...) {
 /**
  * Macro definition of {@link #setFlag}
  */
-stock setFlags(&field, any: ...) {
+stock setFlags(const Logger: logger = Invalid_Logger, &field, any: ...) {
     new const numArgs = numargs();
     for (new i = 1; i < numArgs; i++) {
-        setFlag(field, getarg(i));
+        setFlag(logger, field, getarg(i));
     }
 
     return field;
@@ -149,10 +163,10 @@ stock setFlags(&field, any: ...) {
 /**
  * Macro definition of {@link #unsetFlag}
  */
-stock unsetFlags(&field, any: ...) {
+stock unsetFlags(const Logger: logger = Invalid_Logger, &field, any: ...) {
     new const numArgs = numargs();
     for (new i = 1; i < numArgs; i++) {
-        unsetFlag(field, getarg(i));
+        unsetFlag(logger, field, getarg(i));
     }
 
     return field;
@@ -161,10 +175,10 @@ stock unsetFlags(&field, any: ...) {
 /**
  * Macro definition of {@link #toggleFlag}
  */
-stock toggleFlags(&field, any: ...) {
+stock toggleFlags(const Logger: logger = Invalid_Logger, &field, any: ...) {
     new const numArgs = numargs();
     for (new i = 1; i < numArgs; i++) {
-        toggleFlag(field, getarg(i));
+        toggleFlag(logger, field, getarg(i));
     }
 
     return field;
@@ -181,11 +195,11 @@ stock toggleFlags(&field, any: ...) {
  *
  * @see #isXorFlag
  */
-stock getXorFlag(field, any: ...) {
+stock getXorFlag(const Logger: logger = Invalid_Logger, field, any: ...) {
     new flag = 0;
     new const numArgs = numargs();
     for (new i = 1, arg = getarg(i); i < numArgs; arg = getarg(++i)) {
-        if (isFlagSet(field, arg)) {
+        if (isFlagSet(logger, field, arg)) {
             switch (flag) {
                 case 0: flag = arg;
                 default: return 0;
@@ -206,11 +220,11 @@ stock getXorFlag(field, any: ...) {
  *
  * @see #getXorFlag
  */
-stock bool: isXorFlag(field, any: ...) {
+stock bool: isXorFlag(const Logger: logger = Invalid_Logger, field, any: ...) {
     new flag = 0;
     new const numArgs = numargs();
     for (new i = 1, arg = getarg(i); i < numArgs; arg = getarg(++i)) {
-        if (isFlagSet(field, arg)) {
+        if (isFlagSet(logger, field, arg)) {
             switch (flag) {
                 case 0: flag = arg;
                 default: return false;
