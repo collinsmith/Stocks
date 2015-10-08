@@ -149,6 +149,21 @@ stock bool: areFlagsSet(const Logger: logger = Invalid_Logger, field, any: ...) 
 }
 
 /**
+ * Macro definition of {@code !{@link #isFlagSet}} (i.e., check that none of the
+ * specified flags are set.
+ */
+stock bool: areFlagsNotSet(const Logger: logger = Invalid_Logger, field, any: ...) {
+    new const numArgs = numargs();
+    for (new i = 1; i < numArgs; i++) {
+        if (isFlagSet(logger, field, getarg(i))) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
  * Macro definition of {@link #setFlag}
  */
 stock setFlags(const Logger: logger = Invalid_Logger, &field, any: ...) {
