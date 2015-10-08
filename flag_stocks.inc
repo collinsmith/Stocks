@@ -139,7 +139,7 @@ stock toggleFlag(const Logger: logger = Invalid_Logger, &field, flag) {
  */
 stock bool: areFlagsSet(const Logger: logger = Invalid_Logger, field, any: ...) {
     new const numArgs = numargs();
-    for (new i = 1; i < numArgs; i++) {
+    for (new i = 2; i < numArgs; i++) {
         if (!isFlagSet(logger, field, getarg(i))) {
             return false;
         }
@@ -154,7 +154,7 @@ stock bool: areFlagsSet(const Logger: logger = Invalid_Logger, field, any: ...) 
  */
 stock bool: areFlagsNotSet(const Logger: logger = Invalid_Logger, field, any: ...) {
     new const numArgs = numargs();
-    for (new i = 1; i < numArgs; i++) {
+    for (new i = 2; i < numArgs; i++) {
         if (isFlagSet(logger, field, getarg(i))) {
             return false;
         }
@@ -168,7 +168,7 @@ stock bool: areFlagsNotSet(const Logger: logger = Invalid_Logger, field, any: ..
  */
 stock setFlags(const Logger: logger = Invalid_Logger, &field, any: ...) {
     new const numArgs = numargs();
-    for (new i = 1; i < numArgs; i++) {
+    for (new i = 2; i < numArgs; i++) {
         setFlag(logger, field, getarg(i));
     }
 
@@ -180,7 +180,7 @@ stock setFlags(const Logger: logger = Invalid_Logger, &field, any: ...) {
  */
 stock unsetFlags(const Logger: logger = Invalid_Logger, &field, any: ...) {
     new const numArgs = numargs();
-    for (new i = 1; i < numArgs; i++) {
+    for (new i = 2; i < numArgs; i++) {
         unsetFlag(logger, field, getarg(i));
     }
 
@@ -192,7 +192,7 @@ stock unsetFlags(const Logger: logger = Invalid_Logger, &field, any: ...) {
  */
 stock toggleFlags(const Logger: logger = Invalid_Logger, &field, any: ...) {
     new const numArgs = numargs();
-    for (new i = 1; i < numArgs; i++) {
+    for (new i = 2; i < numArgs; i++) {
         toggleFlag(logger, field, getarg(i));
     }
 
@@ -213,7 +213,7 @@ stock toggleFlags(const Logger: logger = Invalid_Logger, &field, any: ...) {
 stock getXorFlag(const Logger: logger = Invalid_Logger, field, any: ...) {
     new flag = 0;
     new const numArgs = numargs();
-    for (new i = 1, arg = getarg(i); i < numArgs; arg = getarg(++i)) {
+    for (new i = 2, arg = getarg(i); i < numArgs; arg = getarg(++i)) {
         if (isFlagSet(logger, field, arg)) {
             switch (flag) {
                 case 0: flag = arg;
@@ -238,7 +238,7 @@ stock getXorFlag(const Logger: logger = Invalid_Logger, field, any: ...) {
 stock bool: isXorFlag(const Logger: logger = Invalid_Logger, field, any: ...) {
     new flag = 0;
     new const numArgs = numargs();
-    for (new i = 1, arg = getarg(i); i < numArgs; arg = getarg(++i)) {
+    for (new i = 2, arg = getarg(i); i < numArgs; arg = getarg(++i)) {
         if (isFlagSet(logger, field, arg)) {
             switch (flag) {
                 case 0: flag = arg;
