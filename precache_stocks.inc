@@ -96,6 +96,10 @@ stock getModelPath(dst[], len = sizeof dst, const model[], const Logger: logger 
  *             does not exist
  */
 stock bool: precacheModel(const model[], const Logger: logger = Invalid_Logger) {
+    if (logger != Invalid_Logger) {
+        LoggerLogDebug(logger, "Precaching \"%s\"", model);
+    }
+
     if (isStringEmpty(model)) {
         if (logger != Invalid_Logger) {
             LoggerLogError(logger,
@@ -148,6 +152,10 @@ stock bool: precacheModel(const model[], const Logger: logger = Invalid_Logger) 
  *                  false}
  */
 stock bool:precache(const file[], const Logger: logger = Invalid_Logger) {
+    if (logger != Invalid_Logger) {
+        LoggerLogDebug(logger, "Precaching \"%s\"", file);
+    }
+
     if (isStringEmpty(file)) {
         if (logger != Invalid_Logger) {
             LoggerLogError(logger,
