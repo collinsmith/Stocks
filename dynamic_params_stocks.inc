@@ -76,10 +76,11 @@ stock bool: numParamsGreaterEqual(maximum, actual, const Logger: logger = Invali
 
 stock bool: numParamsInRange(minimum, maximum, actual, const Logger: logger = Invalid_Logger) {
   if (minimum > maximum) {
+    new fmt[] = "IllegalArgumentException: max(%d) < min(%d)";
     if (logger > Invalid_Logger) {
-      LoggerLogError(logger, IllegalArgumentException("max(%d) < min(%d)", maximum, minimum));
+      LoggerLogError(logger, fmt, maximum, minimum);
     } else {
-      log_error(AMX_ERR_PARAMS, IllegalArgumentException("max(%d) < min(%d)", maximum, minimum));
+      LoggerLogError(logger, fmt, maximum, minimum);
     }
 
     return false;

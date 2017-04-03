@@ -1,8 +1,8 @@
 #include <amxmodx>
 #include <logger>
 
-#include "..\\testing_stocks.inc"
-#include "..\\flag_stocks.inc"
+#include "../testing_stocks.inc"
+#include "../flag_stocks.inc"
 
 static const TEST[][] = {
     "FAILED",
