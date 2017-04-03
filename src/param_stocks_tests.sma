@@ -2,7 +2,7 @@
 #include <logger>
 
 #include "../testing_stocks.inc"
-#include "../dynamic_params_stocks.inc"
+#include "../param_stocks.inc"
 
 static const TEST[][] = {
     "FAILED",
@@ -17,9 +17,9 @@ static Logger: logger;
 native UnitTest(const function[] = "test", plugin = -1);
 
 public plugin_init() {
-  register_plugin("stock tests", "0.0.1", "Tirant");
+  register_plugin("param_stocks tests", "0.0.1", "Tirant");
 
-  log_amx("Testing dynamic_params_stocks Stocks");
+  log_amx("Testing param_stocks");
 
   tests = passed = 0;
   logger = LoggerCreate();

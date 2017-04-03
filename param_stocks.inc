@@ -7,17 +7,11 @@
 #endif
 #define _dynamic_params_stocks_included
 
-stock IllegalArgumentException(const fmt[], any:...) {
-  new message[192] = "IllegalArgumentException: ";
-  format_args(message[26], 191 - 26, 1);
-  return message;
-}
-
 /*******************************************************************************
  * STOCKS
  ******************************************************************************/
 
-stock bool: numParamsEqual(expected, actual, const Logger: logger = Invalid_Logger) {
+stock bool: numParamsEqual(expected, actual, Logger: logger = Invalid_Logger) {
   if (actual == expected) {
     return true;
   }
@@ -32,11 +26,11 @@ stock bool: numParamsEqual(expected, actual, const Logger: logger = Invalid_Logg
   return false;
 }
 
-stock bool: hasNoParams(actual, const Logger: logger = Invalid_Logger) {
+stock bool: hasNoParams(actual, Logger: logger = Invalid_Logger) {
   return numParamsEqual(0, actual);
 }
 
-stock bool: numParamsFewer(minimum, actual, const Logger: logger = Invalid_Logger) {
+stock bool: numParamsFewer(minimum, actual, Logger: logger = Invalid_Logger) {
   if (actual < minimum) {
     return true;
   }
@@ -51,11 +45,11 @@ stock bool: numParamsFewer(minimum, actual, const Logger: logger = Invalid_Logge
   return false;
 }
 
-stock bool: numParamsFewerEqual(minimum, actual, const Logger: logger = Invalid_Logger) {
+stock bool: numParamsFewerEqual(minimum, actual, Logger: logger = Invalid_Logger) {
   return numParamsFewer(logger, min + 1, test);
 }
 
-stock bool: numParamsGreater(maximum, actual, const Logger: logger = Invalid_Logger) {
+stock bool: numParamsGreater(maximum, actual, Logger: logger = Invalid_Logger) {
   if (actual > maximum) {
     return true;
   }
@@ -70,17 +64,17 @@ stock bool: numParamsGreater(maximum, actual, const Logger: logger = Invalid_Log
   return false;
 }
 
-stock bool: numParamsGreaterEqual(maximum, actual, const Logger: logger = Invalid_Logger) {
+stock bool: numParamsGreaterEqual(maximum, actual, Logger: logger = Invalid_Logger) {
     return numParamsGreater(logger, max - 1, test);
 }
 
-stock bool: numParamsInRange(minimum, maximum, actual, const Logger: logger = Invalid_Logger) {
+stock bool: numParamsInRange(minimum, maximum, actual, Logger: logger = Invalid_Logger) {
   if (minimum > maximum) {
-    new fmt[] = "IllegalArgumentException: max(%d) < min(%d)";
+    new fmt[] = "IllegalArgumentException: minimum (%d) must be less than maximum (%d)";
     if (logger > Invalid_Logger) {
-      LoggerLogError(logger, fmt, maximum, minimum);
+      LoggerLogError(logger, fmt, minimum, maximum);
     } else {
-      LoggerLogError(logger, fmt, maximum, minimum);
+      log_error(AMX_ERR_PARAMS, fmt, minimum, maximum);
     }
 
     return false;

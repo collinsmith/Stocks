@@ -17,9 +17,9 @@ static Logger: logger;
 native UnitTest(const function[] = "test", plugin = -1);
 
 public plugin_init() {
-  register_plugin("stock tests", "0.0.1", "Tirant");
+  register_plugin("flag_stocks tests", "0.0.1", "Tirant");
 
-  log_amx("Testing flag_stocks Stocks");
+  log_amx("Testing flag_stocks");
 
   tests = passed = 0;
   logger = LoggerCreate();
