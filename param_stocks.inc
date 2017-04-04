@@ -2,10 +2,10 @@
  * This file contains utility functions to test parameters.
  */
 
-#if defined _dynamic_params_stocks_included
+#if defined _param_stocks_included
   #endinput
 #endif
-#define _dynamic_params_stocks_included
+#define _param_stocks_included
 
 /*******************************************************************************
  * STOCKS
