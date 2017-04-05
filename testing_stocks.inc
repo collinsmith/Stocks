@@ -19,11 +19,13 @@
  * if they are not.
  * 
  * @param expected The expected value to assert
- * @param actaul   The actual value
- * @param 
+ * @param actual   The actual value
+ * @param logger   The logger to log the error message (if any) to, otherwise
+ *                   {@code Invalid_Logger} to log the error message to the
+ *                   AMXX error log
  * 
  * @return {@code true} if {@code actual} equals {@code expected}, {@code false}
- *          otherwise
+ *         otherwise
  * 
  * @throws AssertionError if {@code actual} is not equal to the {@code expected}
  *         value.
@@ -47,7 +49,7 @@ stock bool: assertEqual(any: expected, any: actual, Logger: logger = Invalid_Log
  *                    AMXX error log 
  * 
  * @return {@code true} if {@code condition} is {@code true}, {@code false}
- *          otherwise
+ *         otherwise
  * 
  * @throws AssertionError if {@code condition} is {@code false}.
  */
@@ -70,13 +72,38 @@ stock bool: assertTrue(bool: condition, Logger: logger = Invalid_Logger) {
  *                    AMXX error log 
  * 
  * @return {@code true} if {@code condition} is {@code false}, {@code false}
- *          otherwise
+ *         otherwise
  * 
  * @throws AssertionError if {@code condition} is {@code true}.
  */
 stock bool: assertFalse(bool: condition, Logger: logger = Invalid_Logger) {
   if (condition) {
     ThrowAssertionException(logger, "Expected: false, was: true");
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * Checks that the {@code actual} string equals the {@code expected} string and
+ * logs an error message if they are not.
+ * 
+ * @param expected The expected string
+ * @param actual   The actual string to check
+ * @param logger   The logger to log the error message (if any) to, otherwise
+ *                   {@code Invalid_Logger} to log the error message to the
+ *                   AMXX error log
+ * 
+ * @return {@code true} if {@code actual} equals {@code expected}, {@code false}
+ *         otherwise
+ * 
+ * @throws AssertionError if {@code actual} is not equal to the {@code expected}
+ *         value.
+ */
+stock bool: assertStringEqual(const expected[], const actual[], Logger: logger = Invalid_Logger) {
+  if (!equal(expected, actual)) {
+    ThrowAssertionException(logger, "Expected: %s, was: %s", expected, actual);
     return false;
   }
 
