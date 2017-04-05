@@ -14,6 +14,11 @@
 
 #include <logger>
 
+#tryinclude "../exception_stocks.inc"
+#if !defined _exception_stocks_included
+  #include <exception_stocks>
+#endif
+
 /*******************************************************************************
  * STOCKS
  ******************************************************************************/
@@ -29,22 +34,12 @@
  * 
  * @throws IllegalArgumentException if {@code flag} is invalid.
  */
-static stock bool: checkFlag(flag, const Logger: logger = Invalid_Logger) {
+static stock bool: checkFlag(flag, Logger: logger = Invalid_Logger) {
   if (flag <= 0) {
-    if (logger > Invalid_Logger) {
-      LoggerLogError(logger, "IllegalArgumentException: flag must be > 0; flag=%d", flag);
-    } else {
-      log_error(AMX_ERR_PARAMS, "IllegalArgumentException: flag must be > 0; flag=%d", flag);
-    }
-
+    ThrowIllegalArgumentException(logger, "flag must be > 0; flag=%d", flag);
     return false;
   } else if (flag > cellbits) {
-    if (logger > Invalid_Logger) {
-      LoggerLogError(logger, "IllegalArgumentException: flag must be <= %d; flag=%d", cellbits, flag);
-    } else {
-      log_error(AMX_ERR_PARAMS, "IllegalArgumentException: flag must be <= %d; flag=%d", cellbits, flag);
-    }
-
+    ThrowIllegalArgumentException(logger, "flag must be <= %d; flag=%d", cellbits, flag);
     return false;
   }
 
@@ -67,7 +62,7 @@ static stock bool: checkFlag(flag, const Logger: logger = Invalid_Logger) {
  * 
  * @see #isFlagSet
  */
-stock getFlag(field, flag, const Logger: logger = Invalid_Logger) {
+stock getFlag(field, flag, Logger: logger = Invalid_Logger) {
   checkFlag(flag, logger);
   return field & (1 << (flag - 1));
 }
@@ -89,7 +84,7 @@ stock getFlag(field, flag, const Logger: logger = Invalid_Logger) {
  * 
  * @see #getFlag
  */
-stock bool: isFlagSet(field, flag, const Logger: logger = Invalid_Logger) {
+stock bool: isFlagSet(field, flag, Logger: logger = Invalid_Logger) {
   return getFlag(field, flag, logger) != 0;
 }
 
@@ -107,7 +102,7 @@ stock bool: isFlagSet(field, flag, const Logger: logger = Invalid_Logger) {
  * 
  * @throws IllegalArgumentException if {@code flag} is invalid.
  */
-stock setFlag(&field, flag, const Logger: logger = Invalid_Logger) {
+stock setFlag(&field, flag, Logger: logger = Invalid_Logger) {
   checkFlag(flag, logger);
   return field |= (1 << (flag - 1));
 }
@@ -126,7 +121,7 @@ stock setFlag(&field, flag, const Logger: logger = Invalid_Logger) {
  * 
  * @throws IllegalArgumentException if {@code flag} is invalid.
  */
-stock unsetFlag(&field, flag, const Logger: logger = Invalid_Logger) {
+stock unsetFlag(&field, flag, Logger: logger = Invalid_Logger) {
   checkFlag(flag, logger);
   return field &= ~(1 << (flag - 1));
 }
@@ -145,7 +140,7 @@ stock unsetFlag(&field, flag, const Logger: logger = Invalid_Logger) {
  * 
  * @throws IllegalArgumentException if {@code flag} is invalid.
  */
-stock toggleFlag(&field, flag, const Logger: logger = Invalid_Logger) {
+stock toggleFlag(&field, flag, Logger: logger = Invalid_Logger) {
   checkFlag(flag, logger);
   return field ^= (1 << (flag - 1));
 }

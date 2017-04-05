@@ -56,6 +56,12 @@ public test_getFlag() {
   test(assertEqual(0b0000, i, logger));
 }
 
+public test_fails_getFlag() {
+  new val = 0b0101;
+  getFlag(val, 0, logger);
+  getFlag(val, cellbits + 1, logger);
+}
+
 public test_isFlagSet() {  
   val = 0b0101;
   b = isFlagSet(val, 1, logger);
