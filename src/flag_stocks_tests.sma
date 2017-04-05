@@ -44,6 +44,17 @@ test(bool: b) {
   if (isEqual) passed++;
 }
 
+public test_fails_checkFlag() {
+  test(assertFalse(checkFlag(0, logger)));
+  test(assertFalse(checkFlag(cellbits + 1, logger)));
+}
+
+public test_checkFlag() {
+  for (new i = 1; i <= cellbits; i++) {
+    test(assertTrue(checkFlag(i, logger)));
+  }
+}
+
 public test_getFlag() {
   new val = 0b0101;
   i = getFlag(val, 1, logger);
@@ -54,12 +65,6 @@ public test_getFlag() {
   test(assertEqual(0b0100, i, logger));
   i = getFlag(val, 4, logger);
   test(assertEqual(0b0000, i, logger));
-}
-
-public test_fails_getFlag() {
-  new val = 0b0101;
-  getFlag(val, 0, logger);
-  getFlag(val, cellbits + 1, logger);
 }
 
 public test_isFlagSet() {  
