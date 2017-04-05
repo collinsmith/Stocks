@@ -10,10 +10,12 @@
 #include <logger>
 
 enum Exception {
+  AssertionException,
   IllegalArgumentException,
 };
 
 stock const Exceptions[Exception][] = {
+  "AssertionException",
   "IllegalArgumentException",
 };
 
@@ -23,6 +25,13 @@ stock const Exceptions[Exception][] = {
 
 #define message_length 1023
 static stock temp[message_length + 1];
+
+stock ThrowAssertionException(Logger: logger = Invalid_Logger, const msg[] = "", any: ...) {
+  #pragma unused msg
+  new len = format_args(temp, message_length, 1);
+  temp[len] = EOS;
+  Throw(logger, Exceptions[AssertionException], temp);
+}
 
 stock ThrowIllegalArgumentException(Logger: logger = Invalid_Logger, const msg[] = "", any: ...) {
   #pragma unused msg
