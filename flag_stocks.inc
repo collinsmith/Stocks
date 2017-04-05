@@ -34,7 +34,7 @@
  * 
  * @throws IllegalArgumentException if {@code flag} is invalid.
  */
-static stock bool: checkFlag(flag, Logger: logger = Invalid_Logger) {
+stock bool: checkFlag(flag, Logger: logger = Invalid_Logger) {
   if (flag <= 0) {
     ThrowIllegalArgumentException(logger, "flag must be > 0; flag=%d", flag);
     return false;
