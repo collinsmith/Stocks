@@ -3,6 +3,13 @@
 #endif
 #define _testing_stocks_included
 
+#include <logger>
+
+#tryinclude "../exception_stocks.inc"
+#if !defined _exception_stocks_included
+  #include <exception_stocks>
+#endif
+
 /*******************************************************************************
  * STOCKS
  ******************************************************************************/
@@ -21,15 +28,9 @@
  * @throws AssertionError if {@code actual} is not equal to the {@code expected}
  *         value.
  */
-stock bool: assertEqual(any: expected, any: actual, Logger: logger) {
+stock bool: assertEqual(any: expected, any: actual, Logger: logger = Invalid_Logger) {
   if (expected != actual) {
-    new fmt[] = "AssertionError: Expected: %d, was: %d";
-    if (logger > Invalid_Logger) {
-      LoggerLogError(logger, fmt, expected, actual);
-    } else {
-      log_error(AMX_ERR_PARAMS, fmt, expected, actual);
-    }
-
+    ThrowAssertionException(logger, "Expected: %d, was: %d", expected, actual);
     return false;
   }
 
@@ -50,15 +51,9 @@ stock bool: assertEqual(any: expected, any: actual, Logger: logger) {
  * 
  * @throws AssertionError if {@code condition} is {@code false}.
  */
-stock bool: assertTrue(bool: condition, Logger: logger) {
+stock bool: assertTrue(bool: condition, Logger: logger = Invalid_Logger) {
   if (!condition) {
-    new fmt[] = "AssertionError: Expected: true, was: false";
-    if (logger > Invalid_Logger) {
-      LoggerLogError(logger, fmt);
-    } else {
-      log_error(AMX_ERR_PARAMS, fmt);
-    }
-
+    ThrowAssertionException(logger, "Expected: true, was: false");
     return false;
   }
 
@@ -79,15 +74,9 @@ stock bool: assertTrue(bool: condition, Logger: logger) {
  * 
  * @throws AssertionError if {@code condition} is {@code true}.
  */
-stock bool: assertFalse(bool: condition, Logger: logger) {
+stock bool: assertFalse(bool: condition, Logger: logger = Invalid_Logger) {
   if (condition) {
-    new fmt[] = "AssertionError: Expected: false, was: true";
-    if (logger > Invalid_Logger) {
-      LoggerLogError(logger, fmt);
-    } else {
-      log_error(AMX_ERR_PARAMS, fmt);
-    }
-    
+    ThrowAssertionException(logger, "Expected: false, was: true");
     return false;
   }
 
