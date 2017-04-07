@@ -8,7 +8,7 @@
 #define _exception_stocks_included
 
 #tryinclude <logger>
-#if !defined _logger_included
+#if !defined Invalid_Logger
   #define Invalid_Logger Logger:(0)
 #endif
 
