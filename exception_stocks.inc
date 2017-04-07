@@ -19,11 +19,13 @@
 enum Exception {
   AssertionException,
   IllegalArgumentException,
+  IllegalStateException,
 };
 
 stock const Exceptions[Exception][] = {
   "AssertionException",
   "IllegalArgumentException",
+  "IllegalStateException",
 };
 
 /*******************************************************************************
@@ -47,6 +49,14 @@ stock ThrowIllegalArgumentException(Logger: logger = Invalid_Logger,
   new len = format_args(temp, message_length, 1);
   temp[len] = EOS;
   Throw(logger, AMX_ERR_PARAMS, Exceptions[IllegalArgumentException], temp);
+}
+
+stock ThrowIllegalStateException(Logger: logger = Invalid_Logger,
+                                 const msg[] = "", any: ...) {
+  #pragma unused msg
+  new len = format_args(temp, message_length, 1);
+  temp[len] = EOS;
+  Throw(logger, AMX_ERR_GENERAL, Exceptions[IllegalStateException], temp);
 }
 
 stock Throw(Logger: logger = Invalid_Logger,
