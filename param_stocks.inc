@@ -60,7 +60,7 @@ stock bool: numParamsEqual(expected, actual, Logger: logger = Invalid_Logger) {
  *         not equal {@code 0}.
  */
 stock bool: hasNoParams(actual, Logger: logger = Invalid_Logger) {
-  return numParamsEqual(0, actual);
+  return numParamsEqual(0, actual, logger);
 }
 
 /**
