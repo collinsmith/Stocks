@@ -147,7 +147,7 @@ stock toggleFlag(&field, flag, Logger: logger = Invalid_Logger) {
 stock bool: areFlagsSet(Logger: logger = Invalid_Logger, field, any: ...) {
   new const numArgs = numargs();
   for (new i = 2; i < numArgs; i++) {
-    if (!isFlagSet(logger, field, getarg(i))) {
+    if (!isFlagSet(field, getarg(i), logger)) {
       return false;
     }
   }
