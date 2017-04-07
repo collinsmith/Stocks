@@ -1,5 +1,5 @@
 /**
- * 
+ * This file contains utility functions to build and manipulate file paths.
  */
 
 #if defined _path_stocks_included

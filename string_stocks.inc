@@ -1,5 +1,6 @@
 /**
- * 
+ * This file contains utility functions that can be used when dealing with
+ * strings.
  */
 
 #if defined _string_stocks_included

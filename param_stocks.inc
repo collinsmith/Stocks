@@ -7,6 +7,12 @@
 #endif
 #define _param_stocks_included
 
+#tryinclude "../exception_stocks.inc"
+#tryinclude "stocks/exception_stocks.inc"
+#if !defined _exception_stocks_included
+  #include <exception_stocks>
+#endif
+
 /*******************************************************************************
  * STOCKS
  ******************************************************************************/
@@ -33,13 +39,8 @@ stock bool: numParamsEqual(expected, actual, Logger: logger = Invalid_Logger) {
     return true;
   }
 
-  new fmt[] = "AssertionError: Expected %d params, was %d";
-  if (logger > Invalid_Logger) {
-    LoggerLogError(logger, fmt, expected, actual);
-  } else {
-    log_error(AMX_ERR_PARAMS, fmt, expected, actual);
-  }
-
+  ThrowAssertionException(logger,
+      "Expected %d params, was %d", expected, actual);
   return false;
 }
 
@@ -84,13 +85,8 @@ stock bool: numParamsFewer(maximum, actual, Logger: logger = Invalid_Logger) {
     return true;
   }
 
-  new fmt[] = "AssertionError: Expected fewer than %d params, was %d";
-  if (logger > Invalid_Logger) {
-    LoggerLogError(logger, fmt, maximum, actual);
-  } else {
-    log_error(AMX_ERR_PARAMS, fmt, maximum, actual);
-  }
-
+  ThrowAssertionException(logger,
+      "Expected fewer than %d params, was %d", maximum, actual);
   return false;
 }
 
@@ -139,13 +135,8 @@ stock bool: numParamsGreater(minimum, actual, Logger: logger = Invalid_Logger) {
     return true;
   }
 
-  new fmt[] = "AssertionError: Expected more than %d params, was %d";
-  if (logger > Invalid_Logger) {
-    LoggerLogError(logger, fmt, minimum, actual);
-  } else {
-    log_error(AMX_ERR_PARAMS, fmt, minimum, actual);
-  }
-
+  ThrowAssertionException(logger,
+      "Expected more than %d params, was %d", minimum, actual);
   return false;
 }
 
@@ -191,13 +182,8 @@ stock bool: numParamsGreaterEqual(minimum, actual, Logger: logger = Invalid_Logg
  */
 stock bool: numParamsInRange(minimum, maximum, actual, Logger: logger = Invalid_Logger) {
   if (minimum > maximum) {
-    new fmt[] = "IllegalArgumentException: minimum (%d) must be less than maximum (%d)";
-    if (logger > Invalid_Logger) {
-      LoggerLogError(logger, fmt, minimum, maximum);
-    } else {
-      log_error(AMX_ERR_PARAMS, fmt, minimum, maximum);
-    }
-
+    ThrowIllegalArgumentException(logger,
+        "minimum (%d) must be less than or equal to maximum (%d)", minimum, maximum);
     return false;
   }
 
@@ -205,12 +191,7 @@ stock bool: numParamsInRange(minimum, maximum, actual, Logger: logger = Invalid_
     return true;
   }
 
-  new fmt[] = "AssertionError: Expected %d to %d params, was %d";
-  if (logger > Invalid_Logger) {
-    LoggerLogError(logger, fmt, minimum, maximum, actual);
-  } else {
-    log_error(AMX_ERR_PARAMS, fmt, minimum, maximum, actual);
-  }
-
+  ThrowAssertionException(logger,
+      "Expected %d to %d params, was %d", minimum, maximum, actual);
   return false;
 }

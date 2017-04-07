@@ -1,11 +1,14 @@
+/**
+ * This file contains utility functions that can be used when testing scripts.
+ */
+
 #if defined _testing_stocks_included
   #endinput
 #endif
 #define _testing_stocks_included
 
-#include <logger>
-
 #tryinclude "../exception_stocks.inc"
+#tryinclude "stocks/exception_stocks.inc"
 #if !defined _exception_stocks_included
   #include <exception_stocks>
 #endif

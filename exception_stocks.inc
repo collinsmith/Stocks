@@ -7,7 +7,10 @@
 #endif
 #define _exception_stocks_included
 
-#include <logger>
+#tryinclude <logger>
+#if !defined _logger_included
+  #define Invalid_Logger Logger:(0)
+#endif
 
 enum Exception {
   AssertionException,
