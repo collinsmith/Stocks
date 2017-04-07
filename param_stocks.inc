@@ -7,6 +7,8 @@
 #endif
 #define _param_stocks_included
 
+#include <amxconst>
+
 #tryinclude "../exception_stocks.inc"
 #tryinclude "include/stocks/exception_stocks.inc"
 #if !defined _exception_stocks_included
@@ -194,4 +196,16 @@ stock bool: numParamsInRange(minimum, maximum, actual, Logger: logger = Invalid_
   ThrowAssertionException(logger,
       "Expected %d to %d params, was %d", minimum, maximum, actual);
   return false;
+}
+
+/**
+ * Indicates whether or not the specified index is a valid player index in the
+ * range {@code [1..{@link amxconst.inc::#MaxClients}]} (inclusive).
+ * 
+ * @param id The integer to check
+ * 
+ * @return {@code true} if it is, {@code false} otherwise
+ */
+stock bool: isValidId(const id) {
+  return 1 <= id && id <= MaxClients;
 }
