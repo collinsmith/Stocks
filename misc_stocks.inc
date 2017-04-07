@@ -41,9 +41,11 @@
  * to the created command. By default, this will create commands in the form
  * {@code "${prefix}.${command}"}.
  * 
- * @param prefix   The sequence of character that should preceed the command.
+ * @param prefix   The sequence of characters that should preceed the command.
  *                   This will not include {@value #CON_CMD_SEPARATOR}, which
- *                   will automatically be appended
+ *                   will automatically be appended. Additionally, multiple
+ *                   aliases can be entered, separated by a comma, e.g.,
+ *                   {@code "cmd,command"}.
  * @param command  The alias of the command
  * @param callback The function to execute when the command is entered
  * @param desc     A brief description of the command
@@ -52,7 +54,9 @@
  *                   not log the event
  * 
  * @return The idenfitifier assigned to the command by {@link #register_concmd},
- *         or {@code 0} on failure.
+ *         or {@code 0} on failure. If multiple aliases are registered at once,
+ *         then the identifier for the first successfully registered one is
+ *         returned.
  * 
  * @throws IllegalArgumentException if {@code command} or {@code callback} is
  *         empty.
@@ -68,27 +72,46 @@ stock registerConCmd(const prefix[], const command[], const callback[],
     return 0;
   }
 
+  new arg[32], len = 0;
   if (!isStringEmpty(prefix)) {
-    new temp[32];
-    new len = copy(temp, 31, prefix);
-    temp[len++] = CON_CMD_SEPARATOR;
-    copy(temp[len], 31 - len, command);
-    new cmd = register_concmd(temp, callback, access, desc);
+    len += copy(arg[len], charsmax(arg) - len, prefix);
+    if (len < charsmax(arg)) {
+      arg[len++] = CON_CMD_SEPARATOR;
+    }
+  }
+
+  new const prefixLen = len;
+
+  new cmd = 0, offset = 0;
+  while ((len = split_string(command[offset], ",", arg[prefixLen], charsmax(arg) - prefixLen)) != -1) {
+    arg[prefixLen + len] = EOS;
+    offset += len;
+
+    new tmpCmd = register_concmd(arg, callback, access, desc);
+    if (!cmd) cmd = tmpCmd;
+
 #if defined _logger_included
     if (logger > Invalid_Logger) {
-      LoggerLogDebug2(logger, true, "register_concmd \"%s\"", temp);
+      LoggerLogDebug2(logger, true, "register_concmd \"%s\"", arg);
     }
+#else
+    log_amx("register_concmd \"%s\"", arg);
 #endif
-
-    return cmd;
   }
 
-  new cmd = register_concmd(command, callback, access, desc);
+  len = copy(arg[prefixLen], charsmax(arg) - prefixLen, command[offset]);
+  arg[prefixLen + len] = EOS;
+
+  new tmpCmd = register_concmd(arg, callback, access, desc);
+  if (!cmd) cmd = tmpCmd;
+
 #if defined _logger_included
   if (logger > Invalid_Logger) {
-    LoggerLogDebug2(logger, true, "register_concmd \"%s\"", command);
+    LoggerLogDebug2(logger, true, "register_concmd \"%s\"", arg);
   }
+#else
+  log_amx("register_concmd \"%s\"", arg);
 #endif
-  
+
   return cmd;
 }
