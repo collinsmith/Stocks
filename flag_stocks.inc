@@ -143,3 +143,102 @@ stock toggleFlag(&field, flag, Logger: logger = Invalid_Logger) {
   checkFlag(flag, logger);
   return field ^= (1 << (flag - 1));
 }
+
+stock bool: areFlagsSet(Logger: logger = Invalid_Logger, field, any: ...) {
+  new const numArgs = numargs();
+  for (new i = 2; i < numArgs; i++) {
+    if (!isFlagSet(logger, field, getarg(i))) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+stock bool: areFlagsNotSet(Logger: logger = Invalid_Logger, field, any: ...) {
+  new const numArgs = numargs();
+  for (new i = 2; i < numArgs; i++) {
+    if (isFlagSet(field, getarg(i), logger)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+stock setFlags(Logger: logger = Invalid_Logger, &field, any: ...) {
+  new const numArgs = numargs();
+  for (new i = 2; i < numArgs; i++) {
+    setFlag(field, getarg(i), logger);
+  }
+
+  return field;
+}
+
+stock unsetFlags(Logger: logger = Invalid_Logger, &field, any: ...) {
+  new const numArgs = numargs();
+  for (new i = 2; i < numArgs; i++) {
+    unsetFlag(field, getarg(i), logger);
+  }
+
+  return field;
+}
+
+stock toggleFlags(Logger: logger = Invalid_Logger, &field, any: ...) {
+  new const numArgs = numargs();
+  for (new i = 2; i < numArgs; i++) {
+    toggleFlag(field, getarg(i), logger);
+  }
+
+  return field;
+}
+
+/**
+ * Indicates if one and only one of the passed flags is set in the given field
+ * and returns the bit which is set.
+ *
+ * @param field The bitwise field to check
+ *
+ * @return The bit number which is set, or {@code 0} if none or more than one is
+ *         set
+ *
+ * @see #isXorFlag
+ */
+stock getXorFlag(Logger: logger = Invalid_Logger, field, any: ...) {
+  new flag = 0;
+  new const numArgs = numargs();
+  for (new i = 2, arg = getarg(i); i < numArgs; arg = getarg(++i)) {
+    if (isFlagSet(field, arg, logger)) {
+      switch (flag) {
+        case 0: flag = arg;
+        default: return 0;
+      }
+    }
+  }
+
+  return flag;
+}
+
+/**
+ * Indicates if one and only one of the passed flags is set in the given field.
+ *
+ * @param field The bitwise field to check
+ *
+ * @return {@code true} if one and only one flag is set, {@code false} otherwise
+ *
+ * @see #getXorFlag
+ */
+stock bool: isXorFlag(Logger: logger = Invalid_Logger, field, any: ...) {
+  new flag = 0;
+  new const numArgs = numargs();
+  for (new i = 2, arg = getarg(i); i < numArgs; arg = getarg(++i)) {
+    if (isFlagSet(field, arg, logger)) {
+      switch (flag) {
+        case 0: flag = arg;
+        default: return false;
+      }
+    }
+  }
+
+  return flag > 0;
+}
