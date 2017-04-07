@@ -48,13 +48,13 @@ public test_ThrowIllegalArgumentException_Amxx() {
 }
 
 public test_Throw_Logger() {
-  Throw(logger, "IllegalArgumentException", "Exception with 0 args");
-  Throw(logger, "IllegalArgumentException", "Exception with 1 arg: %s", "foo");
-  Throw(logger, "IllegalArgumentException", "Exception with 2 args: %s, %s", "foo", "bar");
+  Throw(logger, AMX_ERR_PARAMS, "IllegalArgumentException", "Exception with 0 args");
+  Throw(logger, AMX_ERR_PARAMS, "IllegalArgumentException", "Exception with 1 arg: %s", "foo");
+  Throw(logger, AMX_ERR_PARAMS, "IllegalArgumentException", "Exception with 2 args: %s, %s", "foo", "bar");
 }
 
 public test_Throw_Amxx() {
-  Throw(_, "IllegalArgumentException", "Exception with 0 args");
-  Throw(_, "IllegalArgumentException", "Exception with 1 arg: %s", "foo");
-  Throw(_, "IllegalArgumentException", "Exception with 2 args: %s, %s", "foo", "bar");
+  Throw(_, AMX_ERR_PARAMS, "IllegalArgumentException", "Exception with 0 args");
+  Throw(_, AMX_ERR_PARAMS, "IllegalArgumentException", "Exception with 1 arg: %s", "foo");
+  Throw(_, AMX_ERR_PARAMS, "IllegalArgumentException", "Exception with 2 args: %s, %s", "foo", "bar");
 }
