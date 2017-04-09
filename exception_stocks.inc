@@ -1,5 +1,8 @@
 /**
- * 
+ * Contains stocks related to logging runtime errors, referred to as
+ * "exceptions". While not treated as a runtime exception in another language,
+ * this provides a simplified API to log common errors, such as when an illegal
+ * argument is detected.
  */
 
 #if defined _exception_stocks_included
