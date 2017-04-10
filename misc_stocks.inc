@@ -92,7 +92,7 @@ stock registerConCmd(const prefix[], const command[], const callback[],
 
 #if defined _logger_included
     if (logger > Invalid_Logger) {
-      LoggerLogDebug2(logger, true, "register_concmd \"%s\"", arg);
+      LoggerLogDebug2(logger, false, "register_concmd \"%s\"", arg);
     }
 #else
     log_amx("register_concmd \"%s\"", arg);
@@ -107,7 +107,7 @@ stock registerConCmd(const prefix[], const command[], const callback[],
 
 #if defined _logger_included
   if (logger > Invalid_Logger) {
-    LoggerLogDebug2(logger, true, "register_concmd \"%s\"", arg);
+    LoggerLogDebug2(logger, false, "register_concmd \"%s\"", arg);
   }
 #else
   log_amx("register_concmd \"%s\"", arg);
