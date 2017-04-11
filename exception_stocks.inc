@@ -10,6 +10,9 @@
 #endif
 #define _exception_stocks_included
 
+#include <amxmodx>
+#include <string>
+
 #tryinclude <logger>
 #if !defined Invalid_Logger
   #define Invalid_Logger Logger:(0)
