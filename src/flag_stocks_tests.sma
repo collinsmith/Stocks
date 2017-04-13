@@ -14,7 +14,7 @@ static tests, passed;
 static bool: isEqual;
 static Logger: logger;
 
-native UnitTest(const function[] = "test", plugin = -1);
+native UnitTest(const function[] = "test", plugin = INVALID_PLUGIN_ID);
 
 public plugin_init() {
   register_plugin("flag_stocks tests", "0.0.1", "Tirant");
