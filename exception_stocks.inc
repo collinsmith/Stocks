@@ -72,7 +72,7 @@ stock Throw(Logger: logger = Invalid_Logger,
   static message[message_length + 1];
   new len = copy(message, message_length, exception);
   len += copy(message[len], message_length - len, ": ");
-  len += format_args(message[len], message_length - len, 2);
+  len += format_args(message[len], message_length - len, 3);
   message[len] = EOS;
 #if defined _logger_included
   if (logger > Invalid_Logger) {
