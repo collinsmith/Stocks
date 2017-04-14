@@ -36,7 +36,7 @@ stock TrieToString(const Trie: trie, dst[], len) {
     len += copy(dst[len], maxLen - len, ", ");
   }
 
-  TrieSnapshotDestroy(trie);
+  TrieSnapshotDestroy(keySet);
   if (count > 0) {
     len -= 2;
   }
