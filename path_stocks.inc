@@ -126,3 +126,28 @@ stock fixPathAndMkdir(path[], len) {
 
   return len;
 }
+
+stock BuildPath(dst[], len, const first[], ...) {
+  new const maxLen = len;
+  new const numArgs = numargs();
+  len = FixAndCopyPath(dst, len, first);
+  for (new i = 3; i < numArgs && len <= maxLen; i++) {
+    dst[len++] = PATH_SEPARATOR;
+    for (new j = 0, ch = getarg(i, j); ch != EOS && len <= maxLen; ch = getarg(i, ++j)) {
+      dst[len++] = (ch == PATH_SEPARATOR_ALT) ? PATH_SEPARATOR : ch;
+    }
+  }
+  
+  dst[len] = EOS;
+  return len;
+}
+
+static stock FixAndCopyPath(dst[], len, const path[]) {
+  new i = 0;
+  for (new ch = path[i]; ch != EOS && i <= len; i++, ch = path[i]) {
+    dst[i] = (ch == PATH_SEPARATOR_ALT) ? PATH_SEPARATOR : ch;
+  }
+
+  return i;
+}
+
