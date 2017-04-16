@@ -111,7 +111,7 @@ stock bool: numParamsFewer(maximum, actual, Logger: logger = Invalid_Logger) {
  *         greater than the {@code maximum} number of parameters.
  */
 stock bool: numParamsFewerEqual(maximum, actual, Logger: logger = Invalid_Logger) {
-  return numParamsFewer(logger, maximum + 1, test);
+  return numParamsFewer(maximum + 1, actual, logger);
 }
 
 /**
@@ -161,7 +161,7 @@ stock bool: numParamsGreater(minimum, actual, Logger: logger = Invalid_Logger) {
  *         less than the {@code minimum} number of parameters.
  */
 stock bool: numParamsGreaterEqual(minimum, actual, Logger: logger = Invalid_Logger) {
-    return numParamsGreater(logger, minimum - 1, test);
+    return numParamsGreater(minimum - 1, actual, logger);
 }
 
 /**
