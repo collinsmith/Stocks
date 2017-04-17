@@ -44,21 +44,21 @@ static stock temp[message_length + 1];
 stock ThrowAssertionException(Logger: logger = Invalid_Logger,
                               const msg[] = "", any: ...) {
   #pragma unused msg
-  new len = format_args(temp, message_length, 1);
+  format_args(temp, message_length, 1);
   Throw(logger, AMX_ERR_ASSERT, Exceptions[AssertionException], temp);
 }
 
 stock ThrowIllegalArgumentException(Logger: logger = Invalid_Logger,
                                     const msg[] = "", any: ...) {
   #pragma unused msg
-  new len = format_args(temp, message_length, 1);
+  format_args(temp, message_length, 1);
   Throw(logger, AMX_ERR_PARAMS, Exceptions[IllegalArgumentException], temp);
 }
 
 stock ThrowIllegalStateException(Logger: logger = Invalid_Logger,
                                  const msg[] = "", any: ...) {
   #pragma unused msg
-  new len = format_args(temp, message_length, 1);
+  format_args(temp, message_length, 1);
   Throw(logger, AMX_ERR_GENERAL, Exceptions[IllegalStateException], temp);
 }
 
