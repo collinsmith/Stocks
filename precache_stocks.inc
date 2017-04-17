@@ -82,7 +82,7 @@ stock bool: precacheModel(const model[], Logger: logger = Invalid_Logger) {
   if (isStringEmpty(model)) {
     ThrowIllegalArgumentException(logger, "model cannot be empty!");
     return false;
-  } else if (!equal(model, MODELS, charsmax(MODELS))) {
+  } else if (stringStartsWith(model, MODELS)) {
     ThrowIllegalArgumentException(logger, "model path should start with \"%s\"! (\"%s\")", MODELS, model);
     return false;
   } else if (!file_exists(model)) {

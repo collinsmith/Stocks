@@ -49,21 +49,23 @@
  * @return Number of bytes copied.
  */
 stock stringJoin(dst[], len, const prefix[] = "[", const infix[] = ",", const postfix[] = "]", ...) {
-  new tempLen = copy(dst, len, prefix);
-  new numArgs = numargs();
-  for (new i = 5; i < numArgs && tempLen <= len; i++) {
+  new const maxLen = len;
+  len = copy(dst, maxLen, prefix);
+  
+  new const numArgs = numargs();
+  for (new i = 5; i < numArgs && len <= maxLen; i++) {
     if (i > 5) {
-      tempLen += copy(dst[tempLen], len - tempLen, infix);
+      len += copy(dst[len], maxLen - len, infix);
     }
 
-    for (new j = 0, ch = getarg(i, j); ch != EOS && tempLen <= len; ch = getarg(i, ++j)) {
-      dst[tempLen++] = ch;
+    for (new j = 0, ch = getarg(i, j); ch != EOS && len <= maxLen; ch = getarg(i, ++j)) {
+      dst[len++] = ch;
     }
   }
 
-  tempLen += copy(dst[tempLen], len - tempLen, postfix);
-  dst[tempLen] = EOS;
-  return tempLen;
+  len += copy(dst[len], maxLen - len, postfix);
+  dst[len] = EOS;
+  return len;
 }
 
 /**
@@ -77,7 +79,7 @@ stock stringJoin(dst[], len, const prefix[] = "[", const infix[] = ",", const po
  * 
  * @return Number of bytes copied.
  */
-stock stringGetOrDefault(dst[], len = sizeof dst, const str[], const def[]) {
+stock stringGetOrDefault(dst[], len, const str[], const def[]) {
   if (isStringEmpty(str)) {
     return copy(dst, len, def);
   }
@@ -88,17 +90,11 @@ stock stringGetOrDefault(dst[], len = sizeof dst, const str[], const def[]) {
 /**
  * Tests whether or not a given string starts with a specified string.
  * 
- * @param str  String to check
- * @param test Test string to check if {@param str} starts with
+ * @param str        The string to check
+ * @param startsWith The test string to check if {@param str} starts with
  * 
  * @return {@literal true} if it does, otherwise {@code false}
  */
-stock bool: stringStartsWith(const str[], const test[]) {
-  new i, c1, c2;
-  for (i = 0, c1 = str[i], c2 = test[i];
-      c1 == c2 && c1 != EOS && c2 != EOS;
-      i++, c1 = str[i], c2 = test[i]) {
-  }
-
-  return c2 == EOS;
+stock bool: stringStartsWith(const str[], const startsWith[]) {
+  return equal(str, startsWith) == 1;
 }
