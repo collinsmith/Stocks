@@ -45,7 +45,6 @@ stock ThrowAssertionException(Logger: logger = Invalid_Logger,
                               const msg[] = "", any: ...) {
   #pragma unused msg
   new len = format_args(temp, message_length, 1);
-  temp[len] = EOS;
   Throw(logger, AMX_ERR_ASSERT, Exceptions[AssertionException], temp);
 }
 
@@ -53,7 +52,6 @@ stock ThrowIllegalArgumentException(Logger: logger = Invalid_Logger,
                                     const msg[] = "", any: ...) {
   #pragma unused msg
   new len = format_args(temp, message_length, 1);
-  temp[len] = EOS;
   Throw(logger, AMX_ERR_PARAMS, Exceptions[IllegalArgumentException], temp);
 }
 
@@ -61,7 +59,6 @@ stock ThrowIllegalStateException(Logger: logger = Invalid_Logger,
                                  const msg[] = "", any: ...) {
   #pragma unused msg
   new len = format_args(temp, message_length, 1);
-  temp[len] = EOS;
   Throw(logger, AMX_ERR_GENERAL, Exceptions[IllegalStateException], temp);
 }
 
@@ -73,7 +70,6 @@ stock Throw(Logger: logger = Invalid_Logger,
   new len = copy(message, message_length, exception);
   len += copy(message[len], message_length - len, ": ");
   len += format_args(message[len], message_length - len, 3);
-  message[len] = EOS;
 #if defined _logger_included
   if (logger > Invalid_Logger) {
     LoggerLogError(logger, message);

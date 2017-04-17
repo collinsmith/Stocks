@@ -64,7 +64,6 @@ stock stringJoin(dst[], len, const prefix[] = "[", const infix[] = ",", const po
   }
 
   len += copy(dst[len], maxLen - len, postfix);
-  dst[len] = EOS;
   return len;
 }
 

@@ -137,8 +137,7 @@ stock BuildPath(dst[], len, const first[], ...) {
       dst[len++] = (ch == PATH_SEPARATOR_ALT) ? PATH_SEPARATOR : ch;
     }
   }
-  
-  dst[len] = EOS;
+
   return len;
 }
 
