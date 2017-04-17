@@ -3,6 +3,8 @@
  * as well as precache them.
  */
 
+#include <fakemeta>
+
 #if defined _precache_stocks_included
   #endinput
 #endif
@@ -26,63 +28,46 @@
   #include <string_stocks>
 #endif
 
+static const MODELS[] = "models";
+static const PLAYER[] = "player";
+static const MDL[] = ".mdl";
+
+static const SOUND[] = "sound";
+
 /*******************************************************************************
  * STOCKS
  ******************************************************************************/
 
-/**
- * Formats the path for a player model.
- * 
- * @param dst   The output buffer for the formatted path to {@code model}
- * @param len   The maximum number of bytes that the path can fill
- * @param model Name of the player model file without the extension. This file
- *                is assumed to be located at:
- *                {@code "models/player/${model}/${model}.mdl"}
- * 
- * @return The number of bytes copied, or {@code -1} if an error occurred.
- * 
- * @throws IllegalArgumentException if {@code model} is empty.
- */
-stock getPlayerModelPath(dst[], len, const model[], Logger: logger = Invalid_Logger) {
+stock BuildPlayerModelPath(dst[], len, const model[], Logger: logger = Invalid_Logger) {
   if (isStringEmpty(model)) {
-    ThrowIllegalArgumentException(logger, "model should not be empty!");
-    return -1;
+    ThrowIllegalArgumentException(logger, "model cannot be empty!");
+    return 0;
   }
 
-  new tempLen = getPath(dst, len, MODELS, PLAYER, model, model);
-  return tempLen + copy(dst[tempLen], len - tempLen, MDL);
+  new const maxLen = len;
+  len = BuildPath(dst, len, MODELS, PLAYER, model, model);
+  len += copy(dst[len], maxLen - len, MDL);
+  return len;
 }
 
-/**
- * Formats the path for a model.
- * 
- * @param dst   The output buffer for the formatted path to {@code model}
- * @param len   The maximum number of bytes that the path can fill
- * @param model Name of the model file without the extension. This file is
- *                assumed to be located at {@code "models/${model}.mdl"}.
- *                Model can be specified as a subpath, e.g.,
- *                {@code "knives/v_bowie"} {@literal ->} {@code "models/knives/v_bowie.mdl"}
- * 
- * @return The number of bytes copied, or {@code -1} if an error occurred.
- * 
- * @throws IllegalArgumentException if {@code model} is empty.
- */
-stock getModelPath(dst[], len, const model[], Logger: logger = Invalid_Logger) {
+stock BuildModelPath(dst[], len, const model[], Logger: logger = Invalid_Logger) {
   if (isStringEmpty(model)) {
-    ThrowIllegalArgumentException(logger, "model should not be empty!");
-    return -1;
+    ThrowIllegalArgumentException(logger, "model cannot be empty!");
+    return 0;
   }
 
-  new tempLen = getPath(dst, len, MODELS, model);
-  return tempLen + copy(dst[tempLen], len - tempLen, MDL);
+  new const maxLen = len;
+  len = BuildPath(dst, len, MODELS, model);
+  len += copy(dst[len], maxLen - len, MDL);
+  return len;
 }
 
 /**
  * Precaches a given model. Models should begin with {@code "models"}, and
- * typical names can be formatted using {@link #getPlayerModelPath} and
- * {@link #getModelPath} for player and other models respectively.
+ * typical paths can be constructed using {@link #BuildPlayerModelPath} and
+ * {@link #BuildModelPath}.
  * 
- * @param model The path to the model
+ * @param model The path of the model
  * 
  * @return {@code true} if the model was precached, {@code false} otherwise
  * 
@@ -90,20 +75,18 @@ stock getModelPath(dst[], len, const model[], Logger: logger = Invalid_Logger) {
  *         with "models", or if the model specified by the path does not exist.
  */
 stock bool: precacheModel(const model[], Logger: logger = Invalid_Logger) {
-  if (logger > Invalid_Logger) {
+  if (logger) {
     LoggerLogDebug(logger, "Precaching \"%s\"", model);
   }
 
   if (isStringEmpty(model)) {
-    ThrowIllegalArgumentException(logger, "model should not be empty!");
+    ThrowIllegalArgumentException(logger, "model cannot be empty!");
     return false;
-  } else if (stringStartsWith(model, MODELS)) {
-    ThrowIllegalArgumentException(logger,
-        "model path should start with \"%s\"! (\"%s\")", MODELS, model);
+  } else if (!equal(model, MODELS, charsmax(MODELS))) {
+    ThrowIllegalArgumentException(logger, "model path should start with \"%s\"! (\"%s\")", MODELS, model);
     return false;
   } else if (!file_exists(model)) {
-    ThrowIllegalArgumentException(logger,
-        "model specified by path \"%s\" does not exist!", model);
+    ThrowIllegalArgumentException(logger, "model specified by path \"%s\" does not exist!", model);
     return false;
   }
 
@@ -119,16 +102,15 @@ stock bool: precacheModel(const model[], Logger: logger = Invalid_Logger) {
  * @return {@code true} if the file was precached, {@code false} otherwise
  */
 stock bool: precache(const file[], Logger: logger = Invalid_Logger) {
-  if (logger > Invalid_Logger) {
+  if (logger) {
     LoggerLogDebug(logger, "Precaching \"%s\"", file);
   }
 
   if (isStringEmpty(file)) {
-    ThrowIllegalArgumentException(logger, "file should not be empty!");
+    ThrowIllegalArgumentException(logger, "file cannot be empty!");
     return false;
   } else if (!file_exists(file)) {
-    ThrowIllegalArgumentException(logger,
-        "file specified by path \"%s\" does not exist!", file);
+    ThrowIllegalArgumentException(logger, "file specified by path \"%s\" does not exist!", file);
     return false;
   }
 
@@ -146,6 +128,6 @@ stock bool: precache(const file[], Logger: logger = Invalid_Logger) {
  */
 stock bool: precacheSound(const sound[], Logger: logger = Invalid_Logger) {
   new path[256];
-  getPath(path, _, SOUND, sound);
+  BuildPath(path, charsmax(path), SOUND, sound);
   return precache(path, logger);
 }
