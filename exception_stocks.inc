@@ -26,12 +26,16 @@ enum Exception {
   AssertionException,
   IllegalArgumentException,
   IllegalStateException,
+  IOException,
+  SocketException,
 };
 
 stock const Exceptions[Exception][] = {
   "AssertionException",
   "IllegalArgumentException",
   "IllegalStateException",
+  "IOException",
+  "SocketException"
 };
 
 /*******************************************************************************
@@ -60,6 +64,20 @@ stock ThrowIllegalStateException(Logger: logger = Invalid_Logger,
   #pragma unused msg
   format_args(temp, message_length, 1);
   Throw(logger, AMX_ERR_GENERAL, Exceptions[IllegalStateException], temp);
+}
+
+stock ThrowIOException(Logger: logger = Invalid_Logger,
+                                    const msg[] = "", any: ...) {
+  #pragma unused msg
+  format_args(temp, message_length, 1);
+  Throw(logger, AMX_ERR_GENERAL, Exceptions[IOException], temp);
+}
+
+stock ThrowSocketException(Logger: logger = Invalid_Logger,
+                                 const msg[] = "", any: ...) {
+  #pragma unused msg
+  format_args(temp, message_length, 1);
+  Throw(logger, AMX_ERR_GENERAL, Exceptions[SocketException], temp);
 }
 
 stock Throw(Logger: logger = Invalid_Logger,
