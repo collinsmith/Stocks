@@ -138,6 +138,7 @@ stock BuildPath(dst[], len, const first[], ...) {
     }
   }
 
+  dst[len] = EOS;
   return len;
 }
 
