@@ -45,7 +45,7 @@ stock BuildPlayerModelPath(dst[], len, const model[], Logger: logger = Invalid_L
   }
 
   new const maxLen = len;
-  len = BuildPath(dst, len, MODELS, PLAYER, model, model);
+  len = getPath(dst, len, MODELS, PLAYER, model, model);
   len += copy(dst[len], maxLen - len, MDL);
   return len;
 }
