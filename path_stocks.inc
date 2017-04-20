@@ -3,6 +3,8 @@
 #endif
 #define _path_stocks_included
 
+#include <file>
+
 #tryinclude "include/stocks/string_stocks.inc"
 #tryinclude "include/string_stocks.inc"
 #if !defined _string_stocks_included
@@ -32,6 +34,40 @@ stock getPath(dst[], len, const first[], ...) {
 
   dst[len] = EOS;
   return len;
+}
+
+/** Exactly like getPath, except creates dirs on the fly */
+stock createPath(dst[], len, const first[], ...) {
+  new const maxLen = len; len = 0;
+  for (new ch; len <= maxLen && (ch = first[len]); len++) {
+    createPathAndFix(dst, len, ch);
+  }
+
+  new const numArgs = numargs();
+  for (new i = 3; i < numArgs && len <= maxLen; i++) {
+    dst[len] = EOS;
+    mkdir(dst);
+    dst[len++] = PATH_SEPARATOR;
+    for (new j = 0, ch; len <= maxLen && (ch = getarg(i, j)); j++, len++) {
+      createPathAndFix(dst, len, ch);
+    }
+  }
+
+  // TODO: Add logic to conditionally treat last part as a directory,
+  //       e.g., this/is/a/path/file.txt, file.txt should not be created as a dir
+  dst[len] = EOS;
+  mkdir(dst);
+  return len;
+}
+
+static stock createPathAndFix(dst[], const i, const ch) {
+  if (ch == PATH_SEPARATOR || ch == PATH_SEPARATOR_ALT) {
+    dst[i] = EOS;
+    mkdir(dst);
+    dst[i] = PATH_SEPARATOR;
+  } else {
+    dst[i] = ch;
+  }
 }
 
 /** Copies the path into dst and fixes path separators on the fly */
@@ -71,7 +107,7 @@ stock resolvePath(dst[], len, dstLen = 0, const child[]) {
   return dstLen + copyPath(dst[dstLen], maxLen - dstLen, child);
 }
 
-stock getFileName(dst[], len, const path[], pathLen = 0) {
+stock getFileName(dst[], len, const path[], &pathLen = 0) {
   if (pathLen <= 0) {
     pathLen = strlen(path);
   }
@@ -84,7 +120,7 @@ stock getFileName(dst[], len, const path[], pathLen = 0) {
   return copy(dst, maxLen, path[len + 1]);
 }
 
-stock getFileExtension(dst[], len, const path[], pathLen = 0) {
+stock getFileExtension(dst[], len, const path[], &pathLen = 0) {
   if (pathLen <= 0) {
     pathLen = strlen(path);
   }
@@ -103,7 +139,7 @@ stock getFileExtension(dst[], len, const path[], pathLen = 0) {
   return copy(dst, maxLen, path[len + 1]);
 }
 
-stock getFileNameWithoutExtension(dst[], len, const path[], pathLen = 0) {
+stock getFileNameWithoutExtension(dst[], len, const path[], &pathLen = 0) {
   if (pathLen <= 0) {
     pathLen = strlen(path);
   }
@@ -119,4 +155,17 @@ stock getFileNameWithoutExtension(dst[], len, const path[], pathLen = 0) {
   }
   
   return copy(dst, min(maxLen, extensionStart - len - 1), path[len + 1]);
+}
+
+stock getFileParentPath(dst[], len, const path[], &pathLen = 0) {
+  if (pathLen <= 0) {
+    pathLen = strlen(path);
+  }
+
+  new const maxLen = len; len = pathLen;
+  new ch;
+  while (--len >= 0
+      && (ch = path[len]) != PATH_SEPARATOR
+      && ch != PATH_SEPARATOR_ALT) {}
+  return copy(dst, min(maxLen, len), path);
 }
