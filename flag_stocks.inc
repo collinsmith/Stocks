@@ -12,7 +12,6 @@
 #endif
 #define _flag_stocks_included
 
-#tryinclude "../exception_stocks.inc"
 #tryinclude "include/stocks/exception_stocks.inc"
 #if !defined _exception_stocks_included
   #include <exception_stocks>

@@ -11,19 +11,16 @@
 #endif
 #define _precache_stocks_included
 
-#tryinclude "../exception_stocks.inc"
 #tryinclude "include/stocks/exception_stocks.inc"
 #if !defined _exception_stocks_included
   #include <exception_stocks>
 #endif
 
-#tryinclude "../path_stocks.inc"
 #tryinclude "include/stocks/path_stocks.inc"
 #if !defined _path_stocks_included
   #include <path_stocks>
 #endif
 
-#tryinclude "../string_stocks.inc"
 #tryinclude "include/stocks/string_stocks.inc"
 #if !defined _string_stocks_included
   #include <string_stocks>

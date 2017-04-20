@@ -6,7 +6,6 @@
 #include <file>
 
 #tryinclude "include/stocks/string_stocks.inc"
-#tryinclude "include/string_stocks.inc"
 #if !defined _string_stocks_included
   #include <string_stocks>
 #endif
