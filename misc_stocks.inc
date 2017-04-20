@@ -115,3 +115,33 @@ stock registerConCmd(const prefix[], const command[], const callback[],
 
   return cmd;
 }
+
+stock compareVersions(const current[], const other[]) {
+  new trash1[32], trash2[32];
+  new p1, v1[8], p2, v2[8];
+  
+  new a, b;
+  new i;
+  for (;;) {
+    p1 = strtok2(current[a], v1, charsmax(v1), trash1, charsmax(trash1), '.', TRIM_FULL);
+    p2 = strtok2(other[b], v2, charsmax(v2), trash2, charsmax(trash2), '.', TRIM_FULL);
+    if (p1 != -1 && p2 != -1) {
+      i = str_to_num(v2) - str_to_num(v1);
+      if (i != 0) {
+        return i;
+      }
+
+      a += p1 + 1;
+      b += p2 + 1;
+    } else if (p1 != -1) {
+      return -1;
+    } else if (p2 != -1) {
+      return 1;
+    } else {
+      i = str_to_num(v2) - str_to_num(v1);
+      return i;
+    }
+  }
+
+  return 0;
+}
