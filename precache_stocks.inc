@@ -127,7 +127,7 @@ stock bool: precache(const file[], Logger: logger = Invalid_Logger) {
  * @return {@code true} if the sound was precached, {@code false} otherwise
  */
 stock bool: precacheSound(const sound[], Logger: logger = Invalid_Logger) {
-  new path[256];
+  new path[PLATFORM_MAX_PATH];
   BuildPath(path, charsmax(path), SOUND, sound);
   return precache(path, logger);
 }
