@@ -4,6 +4,7 @@
  */
 
 #include <fakemeta>
+#include <file>
 
 #if defined _precache_stocks_included
   #endinput
