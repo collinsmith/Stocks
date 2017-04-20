@@ -1,140 +1,32 @@
-/**
- * This file contains utility functions to build and manipulate file paths.
- */
-
 #if defined _path_stocks_included
   #endinput
 #endif
 #define _path_stocks_included
 
-#include <file>
+#tryinclude "include/stocks/string_stocks.inc"
+#tryinclude "include/string_stocks.inc"
+#if !defined _string_stocks_included
+  #include <string_stocks>
+#endif
 
+#define PATH_EXTENSION     46 // '.'
 #define PATH_SEPARATOR     47 // '/'
 #define PATH_SEPARATOR_ALT 92 // '\'
 
-/*******************************************************************************
- * STOCKS
- ******************************************************************************/
+#define FixPathSeparator(%1) ((%1 == PATH_SEPARATOR_ALT) ? PATH_SEPARATOR : %1)
 
-/**
- * Concatenates the specified strings formatted as a path using
- * {@value #PATH_SEPARATOR} as the path separator.
- * 
- * For example:
- * {@code getPath(temp, charsmax(temp), "models", "player", "gign", "gign.mdl")}
- * would result in {@code temp} set to {@code "models/player/gign/gign.mdl"}
- * 
- * @param dst   The destination output buffer for the path
- * @param len   The maximum number of character to output
- * @param first The first path to concatenate
- * @param ...   The remaining paths to concatenate
- * 
- * @return The total number of bytes copied
- */
-stock getPath(dst[], len, const first[], /*const remaining[][]*/ ...) {
-  new tempLen = copy(dst, len, first);
-  new numArgs = numargs();
-  for (new i = 3; i < numArgs && tempLen <= len; i++) {
-    dst[tempLen++] = PATH_SEPARATOR;
-    for (new j = 0, ch = getarg(i, j); ch != EOS && tempLen <= len; ch = getarg(i, ++j)) {
-      dst[tempLen++] = ch;
-    }
-  }
-  
-  dst[tempLen] = EOS;
-  return tempLen;
+stock get_pluginsdir(name[], len) {
+  return get_localinfo("amxx_pluginsdir", name, len);
 }
 
-/**
- * Checks if the character at the specified {@code index} in {@code path} is
- * equal to {@value #PATH_SEPARATOR_ALT} and sets it to {@value #PATH_SEPARATOR}.
- * 
- * For example:
- * {@code
- *   new temp[] = "models\player/gign/gign.mdl";
- *   fixPathSeparator(temp, 6);
- * }
- * would result in {@code temp} set to {@code "models/player/gign/gign.mdl"}
- * 
- * @param path  The path to test and fix
- * @param index The index within {@code path} to check
- * 
- * @return {@code true} if the character is a path separator (either
- *         {@value #PATH_SEPARATOR} or {@value #PATH_SEPARATOR_ALT}),
- *         {@code false} otherwise
- */
-stock bool: fixPathSeparator(path[], index) {
-  switch (path[index]) {
-    case PATH_SEPARATOR_ALT: {
-      path[index] = PATH_SEPARATOR;
-      return true;
-    }
-    case PATH_SEPARATOR: {
-      return true;
-    }
-    default:
-      return false;
-  }
-
-  return false;
-}
-
-/**
- * Fixes the path by replacing all {@value #PATH_SEPARATOR_ALT} characters with
- * {@value #PATH_SEPARATOR}.
- * 
- * For example:
- * {@code
- *   new temp[] = "models\player\gign\gign.mdl";
- *   fixPath(temp);
- * }
- * would result in {@code temp} set to {@code "models/player/gign/gign.mdl"}
- * 
- * @param path The path to test and fix
- * @param len  The maximum number of character to check
- * 
- * @return The total number of bytes checked
- */
-stock fixPath(path[], len) {
-  for (new i = 0; i <= len; i++) {
-    fixPathSeparator(path, i);
-  }
-
-  return len;
-}
-
-/**
- * Fixes the path by replacing all {@value #PATH_SEPARATOR_ALT} characters with
- * {@value #PATH_SEPARATOR} and creates directories for each directory as it
- * goes.
- * 
- * @param path The path to fix and make directories for
- * @param len  The maximum number of character to check
- * 
- * @return The total number of bytes checked
- * 
- * @see #fixPath
- */
-stock fixPathAndMkdir(path[], len) {
-  for (new i = 0; i <= len; i++) {
-    if (fixPathSeparator(path, i)) {
-      path[i] = EOS;
-      mkdir(path);
-      path[i] = PATH_SEPARATOR;
-    }
-  }
-
-  return len;
-}
-
-stock BuildPath(dst[], len, const first[], ...) {
-  new const maxLen = len;
+/** Builds a path, fixing separators on the fly */
+stock getPath(dst[], len, const first[], ...) {
+  new const maxLen = len; len = copyPath(dst, len, first);
   new const numArgs = numargs();
-  len = FixAndCopyPath(dst, len, first);
   for (new i = 3; i < numArgs && len <= maxLen; i++) {
     dst[len++] = PATH_SEPARATOR;
-    for (new j = 0, ch = getarg(i, j); ch != EOS && len <= maxLen; ch = getarg(i, ++j)) {
-      dst[len++] = (ch == PATH_SEPARATOR_ALT) ? PATH_SEPARATOR : ch;
+    for (new j = 0, ch; len <= maxLen && (ch = getarg(i, j)); j++, len++) {
+      dst[len] = FixPathSeparator(ch);
     }
   }
 
@@ -142,12 +34,89 @@ stock BuildPath(dst[], len, const first[], ...) {
   return len;
 }
 
-static stock FixAndCopyPath(dst[], len, const path[]) {
-  new i = 0;
-  for (new ch = path[i]; ch != EOS && i <= len; i++, ch = path[i]) {
-    dst[i] = (ch == PATH_SEPARATOR_ALT) ? PATH_SEPARATOR : ch;
+/** Copies the path into dst and fixes path separators on the fly */
+static stock copyPath(dst[], len, const path[]) {
+  new const maxLen = len; len = 0;
+  for (new ch; len <= maxLen && (ch = path[len]); len++) {
+    dst[len] = FixPathSeparator(ch);
   }
 
-  return i;
+  dst[len] = EOS;
+  return len;
 }
 
+/** Fixes path separators for the path and return the length of the path */
+stock fixPath(path[]) {
+  new len = 0;
+  for (new ch; (ch = path[len]); len++) {
+    if (ch == PATH_SEPARATOR_ALT) {
+      path[len] = PATH_SEPARATOR;
+    }
+  }
+
+  return len;
+}
+
+/** Same as getPath, except dst is already assumed to contain a valid path which child is appended to */
+stock resolvePath(dst[], len, dstLen = 0, const child[]) {
+  new const maxLen = len; len = 0;
+  if (dstLen <= 0) {
+    dstLen = strlen(dst);
+  }
+
+  if (dst[dstLen - 1] != PATH_SEPARATOR) {
+    dst[dstLen++] = PATH_SEPARATOR;
+  }
+
+  return dstLen + copyPath(dst[dstLen], maxLen - dstLen, child);
+}
+
+stock getFileName(dst[], len, const path[], pathLen = 0) {
+  if (pathLen <= 0) {
+    pathLen = strlen(path);
+  }
+
+  new const maxLen = len; len = pathLen;
+  new ch;
+  while (--len >= 0
+      && (ch = path[len]) != PATH_SEPARATOR
+      && ch != PATH_SEPARATOR_ALT) {}
+  return copy(dst, maxLen, path[len + 1]);
+}
+
+stock getFileExtension(dst[], len, const path[], pathLen = 0) {
+  if (pathLen <= 0) {
+    pathLen = strlen(path);
+  }
+
+  new const maxLen = len; len = pathLen;
+  new ch;
+  while (--len >= 0
+      && (ch = path[len]) != PATH_EXTENSION
+      && ch != PATH_SEPARATOR
+      && ch != PATH_SEPARATOR_ALT) {}
+
+  switch (path[len]) {
+    case PATH_SEPARATOR:     len = maxLen;
+    case PATH_SEPARATOR_ALT: len = maxLen;
+  }
+  return copy(dst, maxLen, path[len + 1]);
+}
+
+stock getFileNameWithoutExtension(dst[], len, const path[], pathLen = 0) {
+  if (pathLen <= 0) {
+    pathLen = strlen(path);
+  }
+
+  new const maxLen = len; len = pathLen;
+  new ch, extensionStart = pathLen;
+  while (--len >= 0
+      && (ch = path[len]) != PATH_SEPARATOR
+      && ch != PATH_SEPARATOR_ALT) {
+    if (ch == PATH_EXTENSION) {
+      extensionStart = len;
+    }
+  }
+  
+  return copy(dst, min(maxLen, extensionStart - len - 1), path[len + 1]);
+}
