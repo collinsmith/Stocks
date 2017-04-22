@@ -32,7 +32,7 @@
  * @throws AssertionError if {@code actual} is not equal to the {@code expected}
  *         value.
  */
-stock bool: assertEqual(any: expected, any: actual, Logger: logger = Invalid_Logger) {
+stock bool: assertEqual(any: expected, any: actual, Logger: logger = This_Logger) {
   if (expected != actual) {
     ThrowAssertionException(logger, "Expected: %d, was: %d", expected, actual);
     return false;
@@ -55,7 +55,7 @@ stock bool: assertEqual(any: expected, any: actual, Logger: logger = Invalid_Log
  * 
  * @throws AssertionError if {@code condition} is {@code false}.
  */
-stock bool: assertTrue(bool: condition, Logger: logger = Invalid_Logger) {
+stock bool: assertTrue(bool: condition, Logger: logger = This_Logger) {
   if (!condition) {
     ThrowAssertionException(logger, "Expected: true, was: false");
     return false;
@@ -78,7 +78,7 @@ stock bool: assertTrue(bool: condition, Logger: logger = Invalid_Logger) {
  * 
  * @throws AssertionError if {@code condition} is {@code true}.
  */
-stock bool: assertFalse(bool: condition, Logger: logger = Invalid_Logger) {
+stock bool: assertFalse(bool: condition, Logger: logger = This_Logger) {
   if (condition) {
     ThrowAssertionException(logger, "Expected: false, was: true");
     return false;
@@ -103,7 +103,7 @@ stock bool: assertFalse(bool: condition, Logger: logger = Invalid_Logger) {
  * @throws AssertionError if {@code actual} is not equal to the {@code expected}
  *         value.
  */
-stock bool: assertStringEqual(const expected[], const actual[], Logger: logger = Invalid_Logger) {
+stock bool: assertStringEqual(const expected[], const actual[], Logger: logger = This_Logger) {
   if (!equal(expected, actual)) {
     ThrowAssertionException(logger, "Expected: %s, was: %s", expected, actual);
     return false;

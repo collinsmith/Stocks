@@ -32,7 +32,7 @@
  * 
  * @throws IllegalArgumentException if {@code flag} is invalid.
  */
-stock bool: checkFlag(flag, Logger: logger = Invalid_Logger) {
+stock bool: checkFlag(flag, Logger: logger = This_Logger) {
   if (flag <= 0) {
     ThrowIllegalArgumentException(logger, "flag must be > 0; flag=%d", flag);
     return false;
@@ -60,7 +60,7 @@ stock bool: checkFlag(flag, Logger: logger = Invalid_Logger) {
  * 
  * @see #isFlagSet
  */
-stock getFlag(field, flag, Logger: logger = Invalid_Logger) {
+stock getFlag(field, flag, Logger: logger = This_Logger) {
   checkFlag(flag, logger);
   return field & (1 << (flag - 1));
 }
@@ -82,7 +82,7 @@ stock getFlag(field, flag, Logger: logger = Invalid_Logger) {
  * 
  * @see #getFlag
  */
-stock bool: isFlagSet(field, flag, Logger: logger = Invalid_Logger) {
+stock bool: isFlagSet(field, flag, Logger: logger = This_Logger) {
   return getFlag(field, flag, logger) != 0;
 }
 
@@ -100,7 +100,7 @@ stock bool: isFlagSet(field, flag, Logger: logger = Invalid_Logger) {
  * 
  * @throws IllegalArgumentException if {@code flag} is invalid.
  */
-stock setFlag(&field, flag, Logger: logger = Invalid_Logger) {
+stock setFlag(&field, flag, Logger: logger = This_Logger) {
   checkFlag(flag, logger);
   return field |= (1 << (flag - 1));
 }
@@ -119,7 +119,7 @@ stock setFlag(&field, flag, Logger: logger = Invalid_Logger) {
  * 
  * @throws IllegalArgumentException if {@code flag} is invalid.
  */
-stock unsetFlag(&field, flag, Logger: logger = Invalid_Logger) {
+stock unsetFlag(&field, flag, Logger: logger = This_Logger) {
   checkFlag(flag, logger);
   return field &= ~(1 << (flag - 1));
 }
@@ -138,12 +138,12 @@ stock unsetFlag(&field, flag, Logger: logger = Invalid_Logger) {
  * 
  * @throws IllegalArgumentException if {@code flag} is invalid.
  */
-stock toggleFlag(&field, flag, Logger: logger = Invalid_Logger) {
+stock toggleFlag(&field, flag, Logger: logger = This_Logger) {
   checkFlag(flag, logger);
   return field ^= (1 << (flag - 1));
 }
 
-stock bool: areFlagsSet(Logger: logger = Invalid_Logger, field, any: ...) {
+stock bool: areFlagsSet(Logger: logger = This_Logger, field, any: ...) {
   new const numArgs = numargs();
   for (new i = 2; i < numArgs; i++) {
     if (!isFlagSet(field, getarg(i), logger)) {
@@ -154,7 +154,7 @@ stock bool: areFlagsSet(Logger: logger = Invalid_Logger, field, any: ...) {
   return true;
 }
 
-stock bool: areFlagsNotSet(Logger: logger = Invalid_Logger, field, any: ...) {
+stock bool: areFlagsNotSet(Logger: logger = This_Logger, field, any: ...) {
   new const numArgs = numargs();
   for (new i = 2; i < numArgs; i++) {
     if (isFlagSet(field, getarg(i), logger)) {
@@ -165,7 +165,7 @@ stock bool: areFlagsNotSet(Logger: logger = Invalid_Logger, field, any: ...) {
   return true;
 }
 
-stock setFlags(Logger: logger = Invalid_Logger, &field, any: ...) {
+stock setFlags(Logger: logger = This_Logger, &field, any: ...) {
   new const numArgs = numargs();
   for (new i = 2; i < numArgs; i++) {
     setFlag(field, getarg(i), logger);
@@ -174,7 +174,7 @@ stock setFlags(Logger: logger = Invalid_Logger, &field, any: ...) {
   return field;
 }
 
-stock unsetFlags(Logger: logger = Invalid_Logger, &field, any: ...) {
+stock unsetFlags(Logger: logger = This_Logger, &field, any: ...) {
   new const numArgs = numargs();
   for (new i = 2; i < numArgs; i++) {
     unsetFlag(field, getarg(i), logger);
@@ -183,7 +183,7 @@ stock unsetFlags(Logger: logger = Invalid_Logger, &field, any: ...) {
   return field;
 }
 
-stock toggleFlags(Logger: logger = Invalid_Logger, &field, any: ...) {
+stock toggleFlags(Logger: logger = This_Logger, &field, any: ...) {
   new const numArgs = numargs();
   for (new i = 2; i < numArgs; i++) {
     toggleFlag(field, getarg(i), logger);
@@ -203,7 +203,7 @@ stock toggleFlags(Logger: logger = Invalid_Logger, &field, any: ...) {
  *
  * @see #isXorFlag
  */
-stock getXorFlag(Logger: logger = Invalid_Logger, field, any: ...) {
+stock getXorFlag(Logger: logger = This_Logger, field, any: ...) {
   new flag = 0;
   new const numArgs = numargs();
   for (new i = 2, arg = getarg(i); i < numArgs; arg = getarg(++i)) {
@@ -227,7 +227,7 @@ stock getXorFlag(Logger: logger = Invalid_Logger, field, any: ...) {
  *
  * @see #getXorFlag
  */
-stock bool: isXorFlag(Logger: logger = Invalid_Logger, field, any: ...) {
+stock bool: isXorFlag(Logger: logger = This_Logger, field, any: ...) {
   new flag = 0;
   new const numArgs = numargs();
   for (new i = 2, arg = getarg(i); i < numArgs; arg = getarg(++i)) {

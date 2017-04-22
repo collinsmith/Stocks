@@ -35,13 +35,12 @@
  * @throws AssertionException if the {@code actual} number of parameters does
  *         not equal the {@code expected} number of parameters.
  */
-stock bool: numParamsEqual(expected, actual, Logger: logger = Invalid_Logger) {
+stock bool: numParamsEqual(expected, actual, Logger: logger = This_Logger) {
   if (actual == expected) {
     return true;
   }
 
-  ThrowAssertionException(logger,
-      "Expected %d params, was %d", expected, actual);
+  ThrowAssertionException(logger, "Expected %d params, was %d", expected, actual);
   return false;
 }
 
@@ -60,7 +59,7 @@ stock bool: numParamsEqual(expected, actual, Logger: logger = Invalid_Logger) {
  * @throws AssertionException if the {@code actual} number of parameters does
  *         not equal {@code 0}.
  */
-stock bool: hasNoParams(actual, Logger: logger = Invalid_Logger) {
+stock bool: hasNoParams(actual, Logger: logger = This_Logger) {
   return numParamsEqual(0, actual, logger);
 }
 
@@ -81,13 +80,12 @@ stock bool: hasNoParams(actual, Logger: logger = Invalid_Logger) {
  * @throws AssertionException if the {@code actual} number of parameters is
  *         greater than or equal to the {@code maximum} number of parameters.
  */
-stock bool: numParamsFewer(maximum, actual, Logger: logger = Invalid_Logger) {
+stock bool: numParamsFewer(maximum, actual, Logger: logger = This_Logger) {
   if (actual < maximum) {
     return true;
   }
 
-  ThrowAssertionException(logger,
-      "Expected fewer than %d params, was %d", maximum, actual);
+  ThrowAssertionException(logger, "Expected fewer than %d params, was %d", maximum, actual);
   return false;
 }
 
@@ -109,7 +107,7 @@ stock bool: numParamsFewer(maximum, actual, Logger: logger = Invalid_Logger) {
  * @throws AssertionException if the {@code actual} number of parameters is
  *         greater than the {@code maximum} number of parameters.
  */
-stock bool: numParamsFewerEqual(maximum, actual, Logger: logger = Invalid_Logger) {
+stock bool: numParamsFewerEqual(maximum, actual, Logger: logger = This_Logger) {
   return numParamsFewer(maximum + 1, actual, logger);
 }
 
@@ -131,13 +129,12 @@ stock bool: numParamsFewerEqual(maximum, actual, Logger: logger = Invalid_Logger
  * @throws AssertionException if the {@code actual} number of parameters is
  *         less than the {@code minimum} number of parameters.
  */
-stock bool: numParamsGreater(minimum, actual, Logger: logger = Invalid_Logger) {
+stock bool: numParamsGreater(minimum, actual, Logger: logger = This_Logger) {
   if (actual > minimum) {
     return true;
   }
 
-  ThrowAssertionException(logger,
-      "Expected more than %d params, was %d", minimum, actual);
+  ThrowAssertionException(logger, "Expected more than %d params, was %d", minimum, actual);
   return false;
 }
 
@@ -159,7 +156,7 @@ stock bool: numParamsGreater(minimum, actual, Logger: logger = Invalid_Logger) {
  * @throws AssertionException if the {@code actual} number of parameters is
  *         less than the {@code minimum} number of parameters.
  */
-stock bool: numParamsGreaterEqual(minimum, actual, Logger: logger = Invalid_Logger) {
+stock bool: numParamsGreaterEqual(minimum, actual, Logger: logger = This_Logger) {
     return numParamsGreater(minimum - 1, actual, logger);
 }
 
@@ -181,10 +178,9 @@ stock bool: numParamsGreaterEqual(minimum, actual, Logger: logger = Invalid_Logg
  * @throws AssertionException if the {@code actual} number of parameters is
  *         not in the specified range.
  */
-stock bool: numParamsInRange(minimum, maximum, actual, Logger: logger = Invalid_Logger) {
+stock bool: numParamsInRange(minimum, maximum, actual, Logger: logger = This_Logger) {
   if (minimum > maximum) {
-    ThrowIllegalArgumentException(logger,
-        "minimum (%d) must be less than or equal to maximum (%d)", minimum, maximum);
+    ThrowIllegalArgumentException(logger, "minimum (%d) must be less than or equal to maximum (%d)", minimum, maximum);
     return false;
   }
 
@@ -192,8 +188,7 @@ stock bool: numParamsInRange(minimum, maximum, actual, Logger: logger = Invalid_
     return true;
   }
 
-  ThrowAssertionException(logger,
-      "Expected %d to %d params, was %d", minimum, maximum, actual);
+  ThrowAssertionException(logger, "Expected %d to %d params, was %d", minimum, maximum, actual);
   return false;
 }
 

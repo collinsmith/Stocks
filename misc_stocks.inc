@@ -7,10 +7,7 @@
 #endif
 #define _misc_stocks_included
 
-#tryinclude <logger>
-#if !defined Invalid_Logger
-  #define Invalid_Logger Logger:(0)
-#endif
+#include <logger>
 
 #tryinclude "include/stocks/string_stocks.inc"
 #if !defined _string_stocks_included
@@ -61,7 +58,7 @@
  */
 stock registerConCmd(const prefix[], const command[], const callback[],
                      const desc[] = "", access = ADMIN_CFG,
-                     Logger: logger = Invalid_Logger) {
+                     Logger: logger = This_Logger) {
   if (isStringEmpty(command)) {
     ThrowIllegalArgumentException(logger, "command cannot be empty!");
     return 0;
@@ -87,14 +84,11 @@ stock registerConCmd(const prefix[], const command[], const callback[],
 
     new tmpCmd = register_concmd(arg, callback, access, desc);
     if (!cmd) cmd = tmpCmd;
-
-#if defined _logger_included
     if (logger > Invalid_Logger) {
-      LoggerLogDebug2(logger, false, "register_concmd \"%s\"", arg);
+      LoggerLogDebug2(logger, "register_concmd \"%s\"", arg);
+    } else {
+      log_amx("register_concmd \"%s\"", arg);
     }
-#else
-    log_amx("register_concmd \"%s\"", arg);
-#endif
   }
 
   len = copy(arg[prefixLen], charsmax(arg) - prefixLen, command[offset]);
@@ -103,13 +97,11 @@ stock registerConCmd(const prefix[], const command[], const callback[],
   new tmpCmd = register_concmd(arg, callback, access, desc);
   if (!cmd) cmd = tmpCmd;
 
-#if defined _logger_included
   if (logger > Invalid_Logger) {
-    LoggerLogDebug2(logger, false, "register_concmd \"%s\"", arg);
+    LoggerLogDebug2(logger, "register_concmd \"%s\"", arg);
+  } else {
+    log_amx("register_concmd \"%s\"", arg);
   }
-#else
-  log_amx("register_concmd \"%s\"", arg);
-#endif
 
   return cmd;
 }
