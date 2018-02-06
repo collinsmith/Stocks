@@ -1,6 +1,8 @@
 #include <amxmodx>
 #include <logger>
 
+#include "../simple_logger_stocks.inc"
+#include "../exception_stocks.inc"
 #include "../testing_stocks.inc"
 #include "../flag_stocks.inc"
 
@@ -12,7 +14,6 @@ static const TEST[][] = {
 static val, i, bool: b;
 static tests, passed;
 static bool: isEqual;
-static Logger: logger;
 
 native UnitTest(const function[] = "test", plugin = INVALID_PLUGIN_ID);
 
@@ -22,7 +23,6 @@ public plugin_init() {
   log_amx("Testing flag_stocks");
 
   tests = passed = 0;
-  logger = LoggerCreate();
 
   UnitTest();
 
@@ -45,86 +45,86 @@ test(bool: b) {
 }
 
 public test_fails_checkFlag() {
-  test(assertFalse(checkFlag(0, logger)));
-  test(assertFalse(checkFlag(cellbits + 1, logger)));
+  test(assertFalse(checkFlag(0)));
+  test(assertFalse(checkFlag(cellbits + 1)));
 }
 
 public test_checkFlag() {
   for (new i = 1; i <= cellbits; i++) {
-    test(assertTrue(checkFlag(i, logger)));
+    test(assertTrue(checkFlag(i)));
   }
 }
 
 public test_getFlag() {
   new val = 0b0101;
-  i = getFlag(val, 1, logger);
-  test(assertEqual(0b0001, i, logger));
-  i = getFlag(val, 2, logger);
-  test(assertEqual(0b0000, i, logger));
-  i = getFlag(val, 3, logger);
-  test(assertEqual(0b0100, i, logger));
-  i = getFlag(val, 4, logger);
-  test(assertEqual(0b0000, i, logger));
+  i = getFlag(val, 1);
+  test(assertEqual(0b0001, i));
+  i = getFlag(val, 2);
+  test(assertEqual(0b0000, i));
+  i = getFlag(val, 3);
+  test(assertEqual(0b0100, i));
+  i = getFlag(val, 4);
+  test(assertEqual(0b0000, i));
 }
 
 public test_isFlagSet() {  
   val = 0b0101;
-  b = isFlagSet(val, 1, logger);
-  test(assertTrue(b, logger));
-  b = isFlagSet(val, 2, logger);
-  test(assertFalse(b, logger));
-  b = isFlagSet(val, 3, logger);
-  test(assertTrue(b, logger));
-  b = isFlagSet(val, 4, logger);
-  test(assertFalse(b, logger));
+  b = isFlagSet(val, 1);
+  test(assertTrue(b));
+  b = isFlagSet(val, 2);
+  test(assertFalse(b));
+  b = isFlagSet(val, 3);
+  test(assertTrue(b));
+  b = isFlagSet(val, 4);
+  test(assertFalse(b));
 }
 
 public test_setFlag() {
   val = 0b0101;
-  setFlag(val, 1, logger);
-  test(assertEqual(0b0101, val, logger));
-  setFlag(val, 2, logger);
-  test(assertEqual(0b0111, val, logger));
-  setFlag(val, 3, logger);
-  test(assertEqual(0b0111, val, logger));
-  setFlag(val, 4, logger);
-  test(assertEqual(0b1111, val, logger));
+  setFlag(val, 1);
+  test(assertEqual(0b0101, val));
+  setFlag(val, 2);
+  test(assertEqual(0b0111, val));
+  setFlag(val, 3);
+  test(assertEqual(0b0111, val));
+  setFlag(val, 4);
+  test(assertEqual(0b1111, val));
 }
 
 public test_unsetFlag() {
   val = 0b0101;
-  unsetFlag(val, 1, logger);
-  test(assertEqual(0b0100, val, logger));
-  unsetFlag(val, 2, logger);
-  test(assertEqual(0b0100, val, logger));
-  unsetFlag(val, 3, logger);
-  test(assertEqual(0b0000, val, logger));
-  unsetFlag(val, 4, logger);
-  test(assertEqual(0b0000, val, logger));
+  unsetFlag(val, 1);
+  test(assertEqual(0b0100, val));
+  unsetFlag(val, 2);
+  test(assertEqual(0b0100, val));
+  unsetFlag(val, 3);
+  test(assertEqual(0b0000, val));
+  unsetFlag(val, 4);
+  test(assertEqual(0b0000, val));
 }
 
 public test_toggleFlag() {
   val = 0b0101;
-  toggleFlag(val, 1, logger);
-  test(assertEqual(0b0100, val, logger));
-  toggleFlag(val, 2, logger);
-  test(assertEqual(0b0110, val, logger));
-  toggleFlag(val, 3, logger);
-  test(assertEqual(0b0010, val, logger));
-  toggleFlag(val, 4, logger);
-  test(assertEqual(0b1010, val, logger));
+  toggleFlag(val, 1);
+  test(assertEqual(0b0100, val));
+  toggleFlag(val, 2);
+  test(assertEqual(0b0110, val));
+  toggleFlag(val, 3);
+  test(assertEqual(0b0010, val));
+  toggleFlag(val, 4);
+  test(assertEqual(0b1010, val));
 }
 
 public test_setFlagWithPlayerIndexes() {
   val = 0;
   new id = 31;
-  b = isFlagSet(val, id, logger);
-  test(assertFalse(b, logger));
-  setFlag(val, id, logger);
-  test(assertEqual(1<<30, val, logger));
+  b = isFlagSet(val, id);
+  test(assertFalse(b));
+  setFlag(val, id);
+  test(assertEqual(1<<30, val));
   id = 32;
-  setFlag(val, id, logger);
-  test(assertEqual(1<<30|1<<31, val, logger));
+  setFlag(val, id);
+  test(assertEqual(1<<30|1<<31, val));
 }
 
 /*test_XorFlag() {

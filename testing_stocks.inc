@@ -22,9 +22,6 @@
  * 
  * @param expected The expected value to assert
  * @param actual   The actual value
- * @param logger   The logger to log the error message (if any) to, otherwise
- *                   {@code Invalid_Logger} to log the error message to the
- *                   AMXX error log
  * 
  * @return {@code true} if {@code actual} equals {@code expected}, {@code false}
  *         otherwise
@@ -32,9 +29,9 @@
  * @throws AssertionError if {@code actual} is not equal to the {@code expected}
  *         value.
  */
-stock bool: assertEqual(any: expected, any: actual, Logger: logger = This_Logger) {
+stock bool: assertEqual(any: expected, any: actual) {
   if (expected != actual) {
-    ThrowAssertionException(logger, "Expected: %d, was: %d", expected, actual);
+    ThrowAssertionException("Expected: %d, was: %d", expected, actual);
     return false;
   }
 
@@ -46,18 +43,15 @@ stock bool: assertEqual(any: expected, any: actual, Logger: logger = This_Logger
  * logs an error message if it is not.
  * 
  * @param condition The condition to evaluate and assert as {@code true}
- * @param logger    The logger to log the error message (if any) to, otherwise
- *                    {@code Invalid_Logger} to log the error message to the
- *                    AMXX error log 
  * 
  * @return {@code true} if {@code condition} is {@code true}, {@code false}
  *         otherwise
  * 
  * @throws AssertionError if {@code condition} is {@code false}.
  */
-stock bool: assertTrue(bool: condition, Logger: logger = This_Logger) {
+stock bool: assertTrue(bool: condition) {
   if (!condition) {
-    ThrowAssertionException(logger, "Expected: true, was: false");
+    ThrowAssertionException("Expected: true, was: false");
     return false;
   }
 
@@ -69,18 +63,15 @@ stock bool: assertTrue(bool: condition, Logger: logger = This_Logger) {
  * logs an error message if it is not.
  * 
  * @param condition The condition to evaluate and assert as {@code false}
- * @param logger    The logger to log the error message (if any) to, otherwise
- *                    {@code Invalid_Logger} to log the error message to the
- *                    AMXX error log 
  * 
  * @return {@code true} if {@code condition} is {@code false}, {@code false}
  *         otherwise
  * 
  * @throws AssertionError if {@code condition} is {@code true}.
  */
-stock bool: assertFalse(bool: condition, Logger: logger = This_Logger) {
+stock bool: assertFalse(bool: condition) {
   if (condition) {
-    ThrowAssertionException(logger, "Expected: false, was: true");
+    ThrowAssertionException("Expected: false, was: true");
     return false;
   }
 
@@ -93,9 +84,6 @@ stock bool: assertFalse(bool: condition, Logger: logger = This_Logger) {
  * 
  * @param expected The expected string
  * @param actual   The actual string to check
- * @param logger   The logger to log the error message (if any) to, otherwise
- *                   {@code Invalid_Logger} to log the error message to the
- *                   AMXX error log
  * 
  * @return {@code true} if {@code actual} equals {@code expected}, {@code false}
  *         otherwise
@@ -103,9 +91,9 @@ stock bool: assertFalse(bool: condition, Logger: logger = This_Logger) {
  * @throws AssertionError if {@code actual} is not equal to the {@code expected}
  *         value.
  */
-stock bool: assertStringEqual(const expected[], const actual[], Logger: logger = This_Logger) {
+stock bool: assertStringEqual(const expected[], const actual[]) {
   if (!equal(expected, actual)) {
-    ThrowAssertionException(logger, "Expected: %s, was: %s", expected, actual);
+    ThrowAssertionException("Expected: %s, was: %s", expected, actual);
     return false;
   }
 

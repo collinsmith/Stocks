@@ -26,18 +26,15 @@
  * 
  * @param flag   The bit to check, should be in the range {@code [1..cellbits]}
  *                 (inclusive)
- * @param logger The logger to output any error messages to,
- *                 or {@code Invalid_Logger} to output error messages directly
- *                 into the AMXX log file
  * 
  * @throws IllegalArgumentException if {@code flag} is invalid.
  */
-stock bool: checkFlag(flag, Logger: logger = This_Logger) {
+stock bool: checkFlag(flag) {
   if (flag <= 0) {
-    ThrowIllegalArgumentException(logger, "flag must be > 0; flag=%d", flag);
+    ThrowIllegalArgumentException("flag must be > 0; flag=%d", flag);
     return false;
   } else if (flag > cellbits) {
-    ThrowIllegalArgumentException(logger, "flag must be <= %d; flag=%d", cellbits, flag);
+    ThrowIllegalArgumentException("flag must be <= %d; flag=%d", cellbits, flag);
     return false;
   }
 
@@ -50,9 +47,6 @@ stock bool: checkFlag(flag, Logger: logger = This_Logger) {
  * @param field  The bitwise field to check
  * @param flag   The bit to check, should be in the range {@code [1..cellbits]}
  *                 (inclusive)
- * @param logger The logger to output any error messages to,
- *                 or {@code Invalid_Logger} to output error messages directly
- *                 into the AMXX log file
  * 
  * @return The bitwise-and of the flag and the given field
  * 
@@ -60,8 +54,8 @@ stock bool: checkFlag(flag, Logger: logger = This_Logger) {
  * 
  * @see #isFlagSet
  */
-stock getFlag(field, flag, Logger: logger = This_Logger) {
-  checkFlag(flag, logger);
+stock getFlag(field, flag) {
+  checkFlag(flag);
   return field & (1 << (flag - 1));
 }
 
@@ -72,9 +66,6 @@ stock getFlag(field, flag, Logger: logger = This_Logger) {
  * @param field  The bitwise field to check
  * @param flag   The bit to check, should be in the range {@code [1..cellbits]}
  *                 (inclusive)
- * @param logger The logger to output any error messages to,
- *                 or {@code Invalid_Logger} to output error messages directly
- *                 into the AMXX log file
  * 
  * @return {@code true} if the flag is set, {@code false} otherwise
  * 
@@ -82,8 +73,8 @@ stock getFlag(field, flag, Logger: logger = This_Logger) {
  * 
  * @see #getFlag
  */
-stock bool: isFlagSet(field, flag, Logger: logger = This_Logger) {
-  return getFlag(field, flag, logger) != 0;
+stock bool: isFlagSet(field, flag) {
+  return getFlag(field, flag) != 0;
 }
 
 /**
@@ -91,17 +82,14 @@ stock bool: isFlagSet(field, flag, Logger: logger = This_Logger) {
  * 
  * @param field  The bitwise field to set {@code flag}.
  * @param flag   The bit to set
- * @param logger The logger to output any error messages to,
- *                 or {@code Invalid_Logger} to output error messages directly
- *                 into the AMXX log file
  * 
  * @return The new value of {@code field}. Note that {@code field} is also
  *         changed as a result of this call.
  * 
  * @throws IllegalArgumentException if {@code flag} is invalid.
  */
-stock setFlag(&field, flag, Logger: logger = This_Logger) {
-  checkFlag(flag, logger);
+stock setFlag(&field, flag) {
+  checkFlag(flag);
   return field |= (1 << (flag - 1));
 }
 
@@ -110,17 +98,14 @@ stock setFlag(&field, flag, Logger: logger = This_Logger) {
  * 
  * @param field  The bitwise field to unset {@code flag}.
  * @param flag   The bit to unset
- * @param logger The logger to output any error messages to,
- *                 or {@code Invalid_Logger} to output error messages directly
- *                 into the AMXX log file
  * 
  * @return The new value of {@code field}. Note that {@code field} is also
  *         changed as a result of this call
  * 
  * @throws IllegalArgumentException if {@code flag} is invalid.
  */
-stock unsetFlag(&field, flag, Logger: logger = This_Logger) {
-  checkFlag(flag, logger);
+stock unsetFlag(&field, flag) {
+  checkFlag(flag);
   return field &= ~(1 << (flag - 1));
 }
 
@@ -129,24 +114,21 @@ stock unsetFlag(&field, flag, Logger: logger = This_Logger) {
  * 
  * @param field  The bitwise field to toggle {@code flag}.
  * @param flag   The bit to toggle
- * @param logger The logger to output any error messages to,
- *                 or {@code Invalid_Logger} to output error messages directly
- *                 into the AMXX log file
  * 
  * @return The new value of {@code field}. Note that {@code field} is also
  *         changed as a result of this call
  * 
  * @throws IllegalArgumentException if {@code flag} is invalid.
  */
-stock toggleFlag(&field, flag, Logger: logger = This_Logger) {
-  checkFlag(flag, logger);
+stock toggleFlag(&field, flag) {
+  checkFlag(flag);
   return field ^= (1 << (flag - 1));
 }
 
-stock bool: areFlagsSet(Logger: logger = This_Logger, field, any: ...) {
+stock bool: areFlagsSet(field, any: ...) {
   new const numArgs = numargs();
   for (new i = 2; i < numArgs; i++) {
-    if (!isFlagSet(field, getarg(i), logger)) {
+    if (!isFlagSet(field, getarg(i))) {
       return false;
     }
   }
@@ -154,10 +136,10 @@ stock bool: areFlagsSet(Logger: logger = This_Logger, field, any: ...) {
   return true;
 }
 
-stock bool: areFlagsNotSet(Logger: logger = This_Logger, field, any: ...) {
+stock bool: areFlagsNotSet(field, any: ...) {
   new const numArgs = numargs();
   for (new i = 2; i < numArgs; i++) {
-    if (isFlagSet(field, getarg(i), logger)) {
+    if (isFlagSet(field, getarg(i))) {
       return false;
     }
   }
@@ -165,28 +147,28 @@ stock bool: areFlagsNotSet(Logger: logger = This_Logger, field, any: ...) {
   return true;
 }
 
-stock setFlags(Logger: logger = This_Logger, &field, any: ...) {
+stock setFlags(&field, any: ...) {
   new const numArgs = numargs();
   for (new i = 2; i < numArgs; i++) {
-    setFlag(field, getarg(i), logger);
+    setFlag(field, getarg(i));
   }
 
   return field;
 }
 
-stock unsetFlags(Logger: logger = This_Logger, &field, any: ...) {
+stock unsetFlags(&field, any: ...) {
   new const numArgs = numargs();
   for (new i = 2; i < numArgs; i++) {
-    unsetFlag(field, getarg(i), logger);
+    unsetFlag(field, getarg(i));
   }
 
   return field;
 }
 
-stock toggleFlags(Logger: logger = This_Logger, &field, any: ...) {
+stock toggleFlags(&field, any: ...) {
   new const numArgs = numargs();
   for (new i = 2; i < numArgs; i++) {
-    toggleFlag(field, getarg(i), logger);
+    toggleFlag(field, getarg(i));
   }
 
   return field;
@@ -203,11 +185,11 @@ stock toggleFlags(Logger: logger = This_Logger, &field, any: ...) {
  *
  * @see #isXorFlag
  */
-stock getXorFlag(Logger: logger = This_Logger, field, any: ...) {
+stock getXorFlag(field, any: ...) {
   new flag = 0;
   new const numArgs = numargs();
   for (new i = 2, arg = getarg(i); i < numArgs; arg = getarg(++i)) {
-    if (isFlagSet(field, arg, logger)) {
+    if (isFlagSet(field, arg)) {
       switch (flag) {
         case 0: flag = arg;
         default: return 0;
@@ -227,11 +209,11 @@ stock getXorFlag(Logger: logger = This_Logger, field, any: ...) {
  *
  * @see #getXorFlag
  */
-stock bool: isXorFlag(Logger: logger = This_Logger, field, any: ...) {
+stock bool: isXorFlag(field, any: ...) {
   new flag = 0;
   new const numArgs = numargs();
   for (new i = 2, arg = getarg(i); i < numArgs; arg = getarg(++i)) {
-    if (isFlagSet(field, arg, logger)) {
+    if (isFlagSet(field, arg)) {
       switch (flag) {
         case 0: flag = arg;
         default: return false;

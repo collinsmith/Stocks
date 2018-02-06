@@ -45,8 +45,6 @@
  * @param callback The function to execute when the command is entered
  * @param desc     A brief description of the command
  * @param access   The privleges required to execute the command
- * @param logger   The logger to log the event to, or {@code Invalid_Logger} to
- *                   not log the event
  * 
  * @return The idenfitifier assigned to the command by {@link #register_concmd},
  *         or {@code 0} on failure. If multiple aliases are registered at once,
@@ -57,13 +55,12 @@
  *         empty.
  */
 stock registerConCmd(const prefix[], const command[], const callback[],
-                     const desc[] = "", access = ADMIN_CFG,
-                     Logger: logger = This_Logger) {
+                     const desc[] = "", access = ADMIN_CFG) {
   if (isStringEmpty(command)) {
-    ThrowIllegalArgumentException(logger, "command cannot be empty!");
+    ThrowIllegalArgumentException("command cannot be empty!");
     return 0;
   } else if (isStringEmpty(callback)) {
-    ThrowIllegalArgumentException(logger, "callback cannot be empty!");
+    ThrowIllegalArgumentException("callback cannot be empty!");
     return 0;
   }
 
@@ -84,11 +81,7 @@ stock registerConCmd(const prefix[], const command[], const callback[],
 
     new tmpCmd = register_concmd(arg, callback, access, desc);
     if (!cmd) cmd = tmpCmd;
-    if (logger > Invalid_Logger) {
-      LoggerLogDebug2(logger, "register_concmd \"%s\"", arg);
-    } else {
-      log_amx("register_concmd \"%s\"", arg);
-    }
+    logd("register_concmd \"%s\"", arg);
   }
 
   len = copy(arg[prefixLen], charsmax(arg) - prefixLen, command[offset]);
@@ -97,12 +90,7 @@ stock registerConCmd(const prefix[], const command[], const callback[],
   new tmpCmd = register_concmd(arg, callback, access, desc);
   if (!cmd) cmd = tmpCmd;
 
-  if (logger > Invalid_Logger) {
-    LoggerLogDebug2(logger, "register_concmd \"%s\"", arg);
-  } else {
-    log_amx("register_concmd \"%s\"", arg);
-  }
-
+  logd("register_concmd \"%s\"", arg);
   return cmd;
 }
 

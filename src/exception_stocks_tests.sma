@@ -1,8 +1,9 @@
 #include <amxmodx>
 #include <logger>
 
-#include "../testing_stocks.inc"
+#include "../simple_logger_stocks.inc"
 #include "../exception_stocks.inc"
+#include "../testing_stocks.inc"
 
 static const TEST[][] = {
     "FAILED",
@@ -12,7 +13,6 @@ static const TEST[][] = {
 static val, i, bool: b;
 static tests, passed;
 static bool: isEqual;
-static Logger: logger;
 
 native UnitTest(const function[] = "test", plugin = INVALID_PLUGIN_ID);
 
@@ -22,7 +22,6 @@ public plugin_init() {
   log_amx("Testing exception_stocks");
 
   tests = passed = 0;
-  logger = LoggerCreate();
 
   UnitTest();
 
@@ -36,25 +35,13 @@ test(bool: b) {
 }
 
 public test_ThrowIllegalArgumentException_Logger() {
-  ThrowIllegalArgumentException(logger, "Exception with 0 args");
-  ThrowIllegalArgumentException(logger, "Exception with 1 arg: %s", "foo");
-  ThrowIllegalArgumentException(logger, "Exception with 2 args: %s, %s", "foo", "bar");
-}
-
-public test_ThrowIllegalArgumentException_Amxx() {
-  ThrowIllegalArgumentException(_, "Exception with 0 args");
-  ThrowIllegalArgumentException(_, "Exception with 1 arg: %s", "foo");
-  ThrowIllegalArgumentException(_, "Exception with 2 args: %s, %s", "foo", "bar");
+  ThrowIllegalArgumentException("Exception with 0 args");
+  ThrowIllegalArgumentException("Exception with 1 arg: %s", "foo");
+  ThrowIllegalArgumentException("Exception with 2 args: %s, %s", "foo", "bar");
 }
 
 public test_Throw_Logger() {
-  Throw(logger, AMX_ERR_PARAMS, "IllegalArgumentException", "Exception with 0 args");
-  Throw(logger, AMX_ERR_PARAMS, "IllegalArgumentException", "Exception with 1 arg: %s", "foo");
-  Throw(logger, AMX_ERR_PARAMS, "IllegalArgumentException", "Exception with 2 args: %s, %s", "foo", "bar");
-}
-
-public test_Throw_Amxx() {
-  Throw(_, AMX_ERR_PARAMS, "IllegalArgumentException", "Exception with 0 args");
-  Throw(_, AMX_ERR_PARAMS, "IllegalArgumentException", "Exception with 1 arg: %s", "foo");
-  Throw(_, AMX_ERR_PARAMS, "IllegalArgumentException", "Exception with 2 args: %s, %s", "foo", "bar");
+  Throw(AMX_ERR_PARAMS, "IllegalArgumentException", "Exception with 0 args");
+  Throw(AMX_ERR_PARAMS, "IllegalArgumentException", "Exception with 1 arg: %s", "foo");
+  Throw(AMX_ERR_PARAMS, "IllegalArgumentException", "Exception with 2 args: %s, %s", "foo", "bar");
 }
