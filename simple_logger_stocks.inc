@@ -9,31 +9,7 @@
 
 #include <logger>
 
-#define LOG_METHOD Logger
-
-#define message_length 1023
-static stock temp[message_length + 1];
-
-stock logd(const msg[], any: ...) {
-  #pragma unused msg
-  format_args(temp, message_length, 1);
-  LOG_METHOD(DebugLevel, temp);
-}
-
-stock logi(const msg[], any: ...) {
-  #pragma unused msg
-  format_args(temp, message_length, 1);
-  LOG_METHOD(InfoLevel, temp);
-}
-
-stock logw(const msg[], any: ...) {
-  #pragma unused msg
-  format_args(temp, message_length, 1);
-  LOG_METHOD(WarnLevel, temp);
-}
-
-stock loge(const msg[], any: ...) {
-  #pragma unused msg
-  format_args(temp, message_length, 1);
-  LOG_METHOD(ErrorLevel, temp);
-}
+#define logd LoggerLogDebug
+#define logi LoggerLogInfo
+#define logw LoggerLogWarn
+#define loge LoggerLogError
