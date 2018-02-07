@@ -9,7 +9,7 @@
 
 #include <logger>
 
-#define logd LoggerLogDebug
-#define logi LoggerLogInfo
-#define logw LoggerLogWarn
-#define loge LoggerLogError
+#define logd LoggerDebug
+#define logi LoggerInfo
+#define logw LoggerWarn
+#define loge LoggerError
