@@ -45,6 +45,7 @@
  * @param callback The function to execute when the command is entered
  * @param desc     A brief description of the command
  * @param access   The privleges required to execute the command
+ * @param logCmd   {@code true} to log the command registration
  * 
  * @return The idenfitifier assigned to the command by {@link #register_concmd},
  *         or {@code 0} on failure. If multiple aliases are registered at once,
@@ -55,7 +56,8 @@
  *         empty.
  */
 stock registerConCmd(const prefix[], const command[], const callback[],
-                     const desc[] = "", access = ADMIN_CFG) {
+                     const desc[] = "", access = ADMIN_CFG,
+                     const bool: logCmd = false) {
   if (isStringEmpty(command)) {
     ThrowIllegalArgumentException("command cannot be empty!");
     return 0;
@@ -81,7 +83,7 @@ stock registerConCmd(const prefix[], const command[], const callback[],
 
     new tmpCmd = register_concmd(arg, callback, access, desc);
     if (!cmd) cmd = tmpCmd;
-    logd("register_concmd \"%s\"", arg);
+    if (logCmd) logd("register_concmd \"%s\"", arg);
   }
 
   len = copy(arg[prefixLen], charsmax(arg) - prefixLen, command[offset]);
@@ -90,7 +92,7 @@ stock registerConCmd(const prefix[], const command[], const callback[],
   new tmpCmd = register_concmd(arg, callback, access, desc);
   if (!cmd) cmd = tmpCmd;
 
-  logd("register_concmd \"%s\"", arg);
+  if (logCmd) logd("register_concmd \"%s\"", arg);
   return cmd;
 }
 
