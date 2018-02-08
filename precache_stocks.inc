@@ -61,7 +61,7 @@ stock BuildModelPath(dst[], len, const model[]) {
   }
 
   new const maxLen = len;
-  len = BuildPath(dst, len, MODELS, model);
+  len = getPath(dst, len, MODELS, model);
   len += copy(dst[len], maxLen - len, MDL);
   return len;
 }
@@ -130,6 +130,6 @@ stock bool: precache(const file[]) {
  */
 stock bool: precacheSound(const sound[]) {
   new path[PLATFORM_MAX_PATH];
-  BuildPath(path, charsmax(path), SOUND, sound);
+  getPath(path, charsmax(path), SOUND, sound);
   return precache(path);
 }
