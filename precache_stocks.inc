@@ -79,7 +79,9 @@ stock BuildModelPath(dst[], len, const model[]) {
  *         with "models", or if the model specified by the path does not exist.
  */
 stock bool: precacheModel(const model[]) {
+#if defined DEBUG_PRECACHING
   logd("Precaching \"%s\"", model);
+#endif
   if (isStringEmpty(model)) {
     ThrowIllegalArgumentException("model cannot be empty!");
     return false;
@@ -103,7 +105,9 @@ stock bool: precacheModel(const model[]) {
  * @return {@code true} if the file was precached, {@code false} otherwise
  */
 stock bool: precache(const file[]) {
+#if defined DEBUG_PRECACHING
   logd("Precaching \"%s\"", file);
+#endif
   if (isStringEmpty(file)) {
     ThrowIllegalArgumentException("file cannot be empty!");
     return false;
