@@ -47,31 +47,31 @@ static stock temp[message_length + 1];
 
 stock ThrowAssertionException(const msg[] = "", any: ...) {
   #pragma unused msg
-  format_args(temp, message_length, 1);
+  format_args(temp, message_length, 0);
   Throw(AMX_ERR_ASSERT, Exceptions[AssertionException], temp);
 }
 
 stock ThrowIllegalArgumentException(const msg[] = "", any: ...) {
   #pragma unused msg
-  format_args(temp, message_length, 1);
+  format_args(temp, message_length, 0);
   Throw(AMX_ERR_PARAMS, Exceptions[IllegalArgumentException], temp);
 }
 
 stock ThrowIllegalStateException(const msg[] = "", any: ...) {
   #pragma unused msg
-  format_args(temp, message_length, 1);
+  format_args(temp, message_length, 0);
   Throw(AMX_ERR_GENERAL, Exceptions[IllegalStateException], temp);
 }
 
 stock ThrowIOException(const msg[] = "", any: ...) {
   #pragma unused msg
-  format_args(temp, message_length, 1);
+  format_args(temp, message_length, 0);
   Throw(AMX_ERR_GENERAL, Exceptions[IOException], temp);
 }
 
 stock ThrowSocketException(const msg[] = "", any: ...) {
   #pragma unused msg
-  format_args(temp, message_length, 1);
+  format_args(temp, message_length, 0);
   Throw(AMX_ERR_GENERAL, Exceptions[SocketException], temp);
 }
 
@@ -80,7 +80,7 @@ stock Throw(error = AMX_ERR_GENERAL, const exception[], const msg[] = "", any: .
   static message[message_length + 1];
   new len = copy(message, message_length, exception);
   len += copy(message[len], message_length - len, ": ");
-  len += format_args(message[len], message_length - len, 3);  
+  len += format_args(message[len], message_length - len, 2);  
   loge(message);
   log_error(error, message);
 }
