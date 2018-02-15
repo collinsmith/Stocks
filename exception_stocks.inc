@@ -47,31 +47,31 @@ static stock temp[message_length + 1];
 
 stock ThrowAssertionException(const msg[] = "", any: ...) {
   #pragma unused msg
-  format_args(temp, message_length, 0);
+  vformat(temp, message_length, msg, 2);
   Throw(AMX_ERR_ASSERT, Exceptions[AssertionException], temp);
 }
 
 stock ThrowIllegalArgumentException(const msg[] = "", any: ...) {
   #pragma unused msg
-  format_args(temp, message_length, 0);
+  vformat(temp, message_length, msg, 2);
   Throw(AMX_ERR_PARAMS, Exceptions[IllegalArgumentException], temp);
 }
 
 stock ThrowIllegalStateException(const msg[] = "", any: ...) {
   #pragma unused msg
-  format_args(temp, message_length, 0);
+  vformat(temp, message_length, msg, 2);
   Throw(AMX_ERR_GENERAL, Exceptions[IllegalStateException], temp);
 }
 
 stock ThrowIOException(const msg[] = "", any: ...) {
   #pragma unused msg
-  format_args(temp, message_length, 0);
+  vformat(temp, message_length, msg, 2);
   Throw(AMX_ERR_GENERAL, Exceptions[IOException], temp);
 }
 
 stock ThrowSocketException(const msg[] = "", any: ...) {
   #pragma unused msg
-  format_args(temp, message_length, 0);
+  vformat(temp, message_length, msg, 2);
   Throw(AMX_ERR_GENERAL, Exceptions[SocketException], temp);
 }
 
