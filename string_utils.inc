@@ -3,10 +3,10 @@
  * strings.
  */
 
-#if defined _string_stocks_included
+#if defined _string_utils_included
   #endinput
 #endif
-#define _string_stocks_included
+#define _string_utils_included
 
 /*******************************************************************************
  * MACROS

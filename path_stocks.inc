@@ -5,9 +5,9 @@
 
 #include <file>
 
-#tryinclude "include/stocks/string_stocks.inc"
-#if !defined _string_stocks_included
-  #include <string_stocks>
+#tryinclude "include/stocks/string_utils.inc"
+#if !defined _string_utils_included
+  #include <string_utils>
 #endif
 
 #define PATH_EXTENSION     46 // '.'
