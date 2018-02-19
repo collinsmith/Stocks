@@ -43,31 +43,31 @@ stock const Exceptions[Exception][] = {
  ******************************************************************************/
 
 #define message_length 1023
-static stock temp[message_length + 1];
+static stock tmpErr[message_length + 1];
 
 stock ThrowAssertionException(const msg[] = "", any: ...) {
-  vformat(temp, message_length, msg, 2);
-  Throw(AMX_ERR_ASSERT, Exceptions[AssertionException], temp);
+  vformat(tmpErr, message_length, msg, 2);
+  Throw(AMX_ERR_ASSERT, Exceptions[AssertionException], tmpErr);
 }
 
 stock ThrowIllegalArgumentException(const msg[] = "", any: ...) {
-  vformat(temp, message_length, msg, 2);
-  Throw(AMX_ERR_PARAMS, Exceptions[IllegalArgumentException], temp);
+  vformat(tmpErr, message_length, msg, 2);
+  Throw(AMX_ERR_PARAMS, Exceptions[IllegalArgumentException], tmpErr);
 }
 
 stock ThrowIllegalStateException(const msg[] = "", any: ...) {
-  vformat(temp, message_length, msg, 2);
-  Throw(AMX_ERR_GENERAL, Exceptions[IllegalStateException], temp);
+  vformat(tmpErr, message_length, msg, 2);
+  Throw(AMX_ERR_GENERAL, Exceptions[IllegalStateException], tmpErr);
 }
 
 stock ThrowIOException(const msg[] = "", any: ...) {
-  vformat(temp, message_length, msg, 2);
-  Throw(AMX_ERR_GENERAL, Exceptions[IOException], temp);
+  vformat(tmpErr, message_length, msg, 2);
+  Throw(AMX_ERR_GENERAL, Exceptions[IOException], tmpErr);
 }
 
 stock ThrowSocketException(const msg[] = "", any: ...) {
-  vformat(temp, message_length, msg, 2);
-  Throw(AMX_ERR_GENERAL, Exceptions[SocketException], temp);
+  vformat(tmpErr, message_length, msg, 2);
+  Throw(AMX_ERR_GENERAL, Exceptions[SocketException], tmpErr);
 }
 
 stock Throw(error = AMX_ERR_GENERAL, const exception[], const msg[] = "", any: ...) {
