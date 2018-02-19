@@ -74,7 +74,7 @@ stock Throw(error = AMX_ERR_GENERAL, const exception[], const msg[] = "", any: .
   static message[message_length + 1];
   new len = copy(message, message_length, exception);
   len += copy(message[len], message_length - len, ": ");
-  len += format_args(message[len], message_length - len, 2);  
+  len += vformat(message[len], message_length - len, msg, 4);  
   loge(message);
   log_error(error, message);
 }
