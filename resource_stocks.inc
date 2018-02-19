@@ -26,10 +26,6 @@
  *              language that the resource should be translated to
  */
 stock parseResource(const res[], dst[], len, id = LANG_SERVER) {
-#if defined DEBUG_I18N
-  new tmp[32];
-  copy(tmp, charsmax(tmp), res);
-#endif
   if (res[0] == '@') {
     new type[32];
     new const offset = copyc(type, charsmax(type), res[1], '/') + 2;
