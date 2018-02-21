@@ -73,6 +73,8 @@ stock stripResource(const res[], dst[], len) {
     if (equal(res[1], "string", 6)) {
       copy(dst, len, res[7]);
     } else {
+      new type[32];
+      copyc(type, charsmax(type), res[1], '/');
       ThrowUnsupportedOperationException("Resource type not supported: %s", type);
     }
   } else {
