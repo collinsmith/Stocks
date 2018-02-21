@@ -62,7 +62,7 @@ stock getClassPropertyName(const Trie: class, const property[], res[], len) {
 }
 
 // TODO: Documentation
-stock bool: zm_getClassProperty(const Trie: class, const property[], res[], len, id = LANG_SERVER) {
+stock bool: getClassProperty(const Trie: class, const property[], res[], len, id = LANG_SERVER) {
   new const bool: keyExists = TrieGetString(class, property, res, len);
   parseResourceFast(res, len, id);
   return keyExists;
