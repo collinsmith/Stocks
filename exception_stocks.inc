@@ -36,8 +36,8 @@ stock const Exceptions[Exception][] = {
   "IllegalArgumentException",
   "IllegalStateException",
   "IOException",
-  "SocketException"
-  "UnsupportedOperationException"
+  "SocketException",
+  "UnsupportedOperationException",
 };
 
 /*******************************************************************************
