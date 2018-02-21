@@ -67,3 +67,19 @@ stock bool: zm_getClassProperty(const Trie: class, const property[], res[], len,
   parseResourceFast(res, len, id);
   return keyExists;
 }
+
+stock stripResource(const res[], dst[], len) {
+  if (res[0] == '@') {
+    if (equal(res[1], "string", 6)) {
+      copy(dst, len, res[7]);
+    } else {
+      ThrowUnsupportedOperationException("Resource type not supported: %s", type);
+    }
+  } else {
+    copy(dst, len, res);
+  }
+}
+
+stock stripResourceFast(dst[], len) {
+  stripResource(dst, dst, len);
+}
