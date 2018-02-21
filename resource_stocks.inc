@@ -12,6 +12,11 @@
 #include <string>
 #include <celltrie>
 
+#tryinclude "include/stocks/exception_stocks.inc"
+#if !defined _exception_stocks_included
+  #include <exception_stocks>
+#endif
+
 /*******************************************************************************
  * STOCKS
  ******************************************************************************/
@@ -33,8 +38,10 @@ stock parseResource(const res[], dst[], len, id = LANG_SERVER) {
       // TODO: Not found should display something else than ML trans key
       LookupLangKey(dst, len, res[offset], id);
     } else {
-      copy(dst, len, res);
+      ThrowUnsupportedOperationException("Resource type not supported: %s", type);
     }
+  } else {
+    copy(dst, len, res);
   }
 }
 

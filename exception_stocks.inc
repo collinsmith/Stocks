@@ -28,6 +28,7 @@ enum Exception {
   IllegalStateException,
   IOException,
   SocketException,
+  UnsupportedOperationException,
 };
 
 stock const Exceptions[Exception][] = {
@@ -36,6 +37,7 @@ stock const Exceptions[Exception][] = {
   "IllegalStateException",
   "IOException",
   "SocketException"
+  "UnsupportedOperationException"
 };
 
 /*******************************************************************************
@@ -68,6 +70,11 @@ stock ThrowIOException(const msg[] = "", any: ...) {
 stock ThrowSocketException(const msg[] = "", any: ...) {
   vformat(tmpErr, message_length, msg, 2);
   Throw(AMX_ERR_GENERAL, Exceptions[SocketException], tmpErr);
+}
+
+stock ThrowUnsupportedOperationException(const msg[] = "", any: ...) {
+  vformat(tmpErr, message_length, msg, 2);
+  Throw(AMX_ERR_GENERAL, Exceptions[UnsupportedOperationException], tmpErr);
 }
 
 stock Throw(error = AMX_ERR_GENERAL, const exception[], const msg[] = "", any: ...) {
