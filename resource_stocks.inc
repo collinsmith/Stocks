@@ -71,7 +71,7 @@ stock bool: getClassProperty(const Trie: class, const property[], res[], len, id
 stock stripResource(const res[], dst[], len) {
   if (res[0] == '@') {
     if (equal(res[1], "string", 6)) {
-      copy(dst, len, res[7]);
+      copy(dst, len, res[8]);
     } else {
       new type[32];
       copyc(type, charsmax(type), res[1], '/');
