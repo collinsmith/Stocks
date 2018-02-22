@@ -21,67 +21,68 @@
  * STOCKS
  ******************************************************************************/
 
-/**
- * Parses the given string and outputs the resolved value.
- * 
- * @param res The resource string to parse
- * @param dst The resolved value
- * @param len The maximum length of the resolved value
- * @param id  A player index or {@code LANG_SERVER} used to determine the
- *              language that the resource should be translated to
- */
+stock isResourceString(const res[]) {
+  if (res[0] != '@') {
+    return false;
+  }
+  
+  if (equal(res[1], "string/", 7)) {
+    return true;
+  }
+
+  return false;
+}
+
+stock bool: getResourceType(const res[], type[], len) {
+  if (res[0] != '@') {
+    type[0] = EOS;
+    return false;
+  }
+
+  if (equal(res[1], "string/", 7)) {
+    copyc(type, len, res[1], '/');
+    return true;
+  }
+  
+  copyc(type, len, res[1], '/');
+  ThrowUnsupportedOperationException("Resource type not supported: %s", type);
+  return false;
+}
+
 stock parseResource(const res[], dst[], len, id = LANG_SERVER) {
-  if (res[0] == '@') {
-    new type[32];
-    new const offset = copyc(type, charsmax(type), res[1], '/') + 2;
-    if (equal(type, "string")) {
-      // TODO: Not found should display something else than ML trans key
-      LookupLangKey(dst, len, res[offset], id);
-    } else {
-      ThrowUnsupportedOperationException("Resource type not supported: %s", type);
+  if (res[0] != '@') {
+    return;
+  }
+
+  if (equal(res[1], "string/", 7)) {
+    if (!LookupLangKey(dst, len, res[8], id)) {
+      formatex(dst, len, "ML_NOTFOUND: %s", res[8]);
     }
   } else {
-    copy(dst, len, res);
+    new type[32];
+    copyc(type, charsmax(type), res[1], '/');
+    ThrowUnsupportedOperationException("Resource type not supported: %s", type);
   }
 }
 
-// TODO: Documentation
 stock parseResourceFast(res[], len, id = LANG_SERVER) {
   parseResource(res, res, len, id);
 }
 
-// TODO: Documentation
-stock parseClassResource(const Trie: class, const property[], res[], len, id = LANG_SERVER) {
-  TrieGetString(class, property, res, len);
-  parseResourceFast(res, len, id);
-}
-
-// TODO: Documentation
-stock getClassPropertyName(const Trie: class, const property[], res[], len) {
-  TrieGetString(class, property, res, len);
-}
-
-// TODO: Documentation
-stock bool: getClassProperty(const Trie: class, const property[], res[], len, id = LANG_SERVER) {
-  new const bool: keyExists = TrieGetString(class, property, res, len);
-  parseResourceFast(res, len, id);
-  return keyExists;
-}
-
 stock stripResource(const res[], dst[], len) {
-  if (res[0] == '@') {
-    if (equal(res[1], "string", 6)) {
-      copy(dst, len, res[8]);
-    } else {
-      new type[32];
-      copyc(type, charsmax(type), res[1], '/');
-      ThrowUnsupportedOperationException("Resource type not supported: %s", type);
-    }
+  if (res[0] != '@') {
+    return;
+  }
+
+  if (equal(res[1], "string/", 7)) {
+    copy(dst, len, res[8]);
   } else {
-    copy(dst, len, res);
+    new type[8];
+    copyc(type, charsmax(type), res[1], '/');
+    ThrowUnsupportedOperationException("Resource type not supported: %s", type);
   }
 }
 
-stock stripResourceFast(dst[], len) {
-  stripResource(dst, dst, len);
+stock stripResourceFast(res[], len) {
+  stripResource(res, res, len);
 }
